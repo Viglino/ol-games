@@ -31,7 +31,7 @@ Just look at the [OL3 example page](https://openlayers.org/en/latest/examples/?q
 Here are some of the features I'm working on in this repository.
 
 ### Hex map
-A hexagonal map or hex map is a game board design commonly used in wargames of all scales. 
+A [hexagonal map or hex map](https://viglino.github.io/ol3-games/examples/map.hexmap.html) is a game board design commonly used in wargames of all scales. 
 The map is subdivided into a hexagonal tiling, small regular hexagons of identical size.
 
 For more information on Hexagnol grid, I recommend this [fabulous Red Blob Games article](http://www.redblobgames.com/grids/hexagons/).
