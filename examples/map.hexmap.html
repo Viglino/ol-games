@@ -1,0 +1,261 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<!----------------------------------------------------------
+ 
+	Copyright (c) 2017 Jean-Marc VIGLINO, 
+	released under CeCILL-B (french BSD like) licence: http://www.cecill.info/
+	
+------------------------------------------------------------>
+	<title>OL3-ext: Profil GP</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<meta name="description" content="transform interaction for OL3" />
+	<meta name="keywords" content="ol3, vector, transform, rotate, scale, stretch" />
+
+	<link rel="stylesheet" href="style.css" />
+
+	<!-- jQuery -->
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<!-- FontAwesome -->
+	<link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css" type="text/css" />
+
+	<!-- OL3 -->
+    <link rel="stylesheet" href="http://openlayers.org/en/master/css/ol.css" />
+	<script type="text/javascript" src="http://openlayers.org/en/master/build/ol.js"></script>
+
+	<!-- OL3-ext -->
+	<link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/dist/ol3-ext.css" />
+	<script type="text/javascript" src="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/dist/ol3-ext.js"></script>
+
+	<!-- game -->
+	<script type="text/javascript" src="../hexmap/hexgrid.js"></script>
+	<script type="text/javascript" src="../hexmap/hexmapsource.js"></script>
+
+	<style>
+		#map
+		{	position: absolute;
+			top:4.5em; bottom:0;
+			left:0; right: 0;
+			margin: 0;
+		}
+		.options
+		{	position:absolute;
+			right: 1em;
+		}
+	</style>
+
+</head>
+<body >
+	<a href="https://github.com/Viglino/ol3-ext"><img style="position: absolute; top: 0; right: 0; border: 0; z-index:1" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+	<a href="../index.html">
+		<h1>OL3-ext: Profil GP</h1>
+	</a>
+	<div class="info">
+	</div>
+
+	<!-- Map div -->
+	<div id="map"></div>
+
+	<div class="options" >
+		<h2>Options:</h2>
+		<div id="pattern"></div>
+		
+		<ul>
+			<li>
+				layout:
+				<select id="layout" onchange="grid.setLayout(this.value); vector.getSource().clear();">
+					<option value="pointy">pointy</option>
+					<option value="flat">flat</option>
+				</select>
+			</li>
+			<li>
+				size:
+				<select id="size" onchange="grid.setSize(this.value)">
+					<option value="2000">small</option>
+					<option value="4000" selected="selected">standard</option>
+					<option value="6000">big</option>
+				</select>
+			</li>
+			<li>
+				actions:<br/>
+				<input type="radio" name="action" value="dist" /><label> distance</label>
+				<br/>
+				coords:<br/>
+				<input type="radio" name="action" value="axial" /><label> axial</label>
+				<br />
+				<input type="radio" name="action" value="offset" /><label> offset</label>
+				<br />
+				<input type="radio" name="action" value="cube" /><label> cube</label>
+			</li>
+		</ul>
+	</div>
+	
+
+	<script type="text/javascript">
+		// Layers
+		var layers = [ new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'watercolor' }) }) ];
+		
+		// Popup
+		var popup = new ol.Overlay.Popup (
+		{	popupClass: "tooltips", 
+			positioning: 'auto'
+		});
+
+		// The map
+		var map = new ol.Map
+			({	target: 'map',
+				view: new ol.View
+				({	zoom: 11,
+					center: [260064, 6250762]
+				}),
+				controls: ol.control.defaults({ "attribution": false }),
+				layers: layers,
+				overlays: [popup]
+			});
+
+		var grid = new ol.HexGrid ({ size:4000, origin: map.getView().getCenter() });
+		var hex = new ol.source.HexMap({ hexGrid: grid });
+        map.addLayer ( new ol.layer.Image({ source: hex }) );
+
+		var text = false;
+		hex.set('text', text);
+		grid.setLayout($("#layout").val());
+		grid.setSize($("#size").val());
+
+		var vector = new ol.layer.Vector({ 
+			source: new ol.source.Vector(),
+			//style: new ol.style.Style ({ fill: new ol.style.Fill({ color:"red"} )})
+		});
+        map.addLayer(vector);
+
+		// Styles
+		var greenStyle = new ol.style.Style(
+			{	fill: new ol.style.Fill({ color: 'rgba(0,255,0,0.2)' }),
+					stroke: new ol.style.Stroke({ color: 'green', width: 1.25 })
+			});
+		var blueStyle = new ol.style.Style(
+			{	fill: new ol.style.Fill({ color: 'rgba(0,0,255,0.2)' }),
+					stroke: new ol.style.Stroke({ color: 'blue', width: 1.25 })
+			});
+		var redStyle = new ol.style.Style(
+			{	fill: new ol.style.Fill({ color: 'rgba(255,0,0,0.2)' }),
+					stroke: new ol.style.Stroke({ color: 'red', width: 1.25 })
+			});
+
+		// Pointer move
+		var current = [];
+		var start = false;
+		map.on(["pointermove", "click"], function(e)
+		{	// Coords
+			var h = grid.coord2hex(e.coordinate);
+			if (e.type!="click" && h[0]==current[0] && h[1]==current[1]) return;
+			current = h;
+
+			// Move
+			if (!text)
+			{	vector.getSource().clear();
+				var c = grid.hex2cube(grid.coord2hex(e.coordinate));
+				if (e.type=="click") start = c;
+				if (start) 
+				{	var l = grid.cube_line(start, c);
+					for (var i=0; i<l.length; i++)
+					{	var ex = grid.getHexagon(grid.cube2hex(l[i]));
+						var f = new ol.Feature(new ol.geom.Polygon([ex]));
+						f.setStyle(redStyle);
+						vector.getSource().addFeature(f);
+					}
+					popup.show ( e.coordinate, "Move = "+(l.length-1)+" cube"+(l.length>2?"s":"") ); 
+				}
+				return;
+			}
+
+			popup.hide(); 
+
+			vector.getSource().clear();
+			var ex = grid.getHexagon(h);
+			var f = new ol.Feature(new ol.geom.Polygon([ex]));
+			vector.getSource().addFeature(f);
+			
+			var size = map.getSize();
+			size = Math.round( Math.max(size[0],size[1]) / grid.getSize() * map.getView().getResolution() / Math.sqrt(3) );
+			switch (text)
+			{	case 'cube':
+					var c = grid.hex2cube(h);
+					for (var x=-size; x<=size; x++)
+					{	if (x) 
+						{	ex = grid.getHexagon (grid.cube2hex([c[0]+x,c[1]-x,c[2]]));
+							f = new ol.Feature(new ol.geom.Polygon([ex]));
+							f.setStyle(greenStyle);
+							vector.getSource().addFeature(f);
+							ex = grid.getHexagon (grid.cube2hex([c[0]+x,c[1],c[2]-x]));
+							f = new ol.Feature(new ol.geom.Polygon([ex]));
+							f.setStyle(blueStyle);
+							vector.getSource().addFeature(f);
+							ex = grid.getHexagon (grid.cube2hex([c[0],c[1]+x,c[2]-x]));
+							f = new ol.Feature(new ol.geom.Polygon([ex]));
+							f.setStyle(redStyle);
+							vector.getSource().addFeature(f);
+						}
+					}
+				break;
+				case 'axial':
+					for (var x=-size; x<=size; x++)
+					{	if (x) 
+						{	ex = grid.getHexagon ([h[0]+x,h[1]]);
+							f = new ol.Feature(new ol.geom.Polygon([ex]));
+							f.setStyle(greenStyle);
+							vector.getSource().addFeature(f);
+							ex = grid.getHexagon ([h[0],h[1]+x]);
+							f = new ol.Feature(new ol.geom.Polygon([ex]));
+							f.setStyle(blueStyle);
+							vector.getSource().addFeature(f);
+						}
+					}
+				break;
+				case 'offset':
+					var o = grid.hex2offset(h);
+					for (var x=-size; x<=size; x++)
+					{	if (x) 
+						{	ex = grid.getHexagon (grid.offset2hex([o[0]+x,o[1]]));
+							f = new ol.Feature(new ol.geom.Polygon([ex]));
+							f.setStyle(greenStyle);
+							vector.getSource().addFeature(f);
+							ex = grid.getHexagon (grid.offset2hex([o[0],o[1]+x]));
+							f = new ol.Feature(new ol.geom.Polygon([ex]));
+							f.setStyle(blueStyle);
+							vector.getSource().addFeature(f);
+						}
+					}
+				break;
+				default: break;
+			}
+		});
+		
+		// Handle menu
+		$("label").click(function(){ $(this).prev().click(); });
+		$('input[name=action]').on('change', function()
+		{	var v = $('input[name=action]:checked').val();
+			vector.getSource().clear();
+			console.log('clear()')
+			popup.hide();
+			start = false;
+			switch (v)
+			{	case 'axial':
+				case 'offset':
+				case 'cube':
+					text = v;
+					hex.showCoordiantes(v);
+					break;
+				default:
+					text = false;
+					hex.showCoordiantes(false);
+					break;
+			};
+		});
+
+	</script>
+
+</body>
+</html>
