@@ -43,7 +43,7 @@ This include sprite animation and sprite collision detection.
 
 ### Animations
 #### Explosions
-Explosions are an integral part of games. Not that all games need explosions, but they play an important 
+[Explosions](https://viglino.github.io/ol3-games/examples/map.explode.html) are an integral part of games. Not that all games need explosions, but they play an important 
 role in the game dynamics. 
 
 ### Artificial intelligence
