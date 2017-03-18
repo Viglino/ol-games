@@ -37,7 +37,7 @@ The map is subdivided into a hexagonal tiling, small regular hexagons of identic
 For more information on Hexagnol grid, I recommend this [fabulous Red Blob Games article](http://www.redblobgames.com/grids/hexagons/).
 
 ### Sprite
-Sprite and Spritesheets have been used in games for a long time. 
+[Sprite and Spritesheets](https://viglino.github.io/ol3-games/examples/map.sprite.html) have been used in games for a long time. 
 
 This include sprite animation and sprite collision detection.
 
