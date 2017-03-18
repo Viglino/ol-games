@@ -5,6 +5,13 @@ One hand, many games use maps as playground and some are based on a map. On the 
 This project tends to test and add game mechanisms within OL3 (Openlayers 3).
 > It is by no means a complete game or complete game engine but you should some stuff to devleopp game on a map with OL3.
 
+## Dependencies
+This project uses [OL3](https://github.com/openlayers/openlayers), [OL3-ext]() and [jQuery](https://github.com/jquery/jquery).
+Hexagnol grid concepts developped in the [Red Blob Games](http://www.redblobgames.com/grids/hexagons/).
+
+Materials mainly comes from the [FreeSound project](https://www.freesound.org/) and [OpenGameArt](http://opengameart.org/).
+
+
 ## OL3
 
 [OpenLayers](https://openlayers.org/) makes it easy to put a dynamic map in any web page. 
@@ -51,7 +58,7 @@ This is just a simple
 OL3-games is licenced under the French Opensource BSD compatible CeCILL-B FREE SOFTWARE LICENSE.  
  (c) 2017 - Jean-Marc Viglino
 
-Some resources (mapping services and API, sprites or sounds) used in this sofware may have a specific license.  
+Some resources and materials (mapping services and API, sprites or sounds) used in this sofware may have a specific license.  
 You must check before use.
 
 > Full text license in English: (http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt)  
