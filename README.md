@@ -50,7 +50,7 @@ role in the game dynamics.
 #### Pathfinding algorithms: A*
 
 ### Audio
-This is just a simple 
+This is just a simple implementation of the HTML [Audio](https://www.w3schools.com/tags/ref_av_dom.asp) to add [sounds in a game](file:///C:/wamp64/www/geopole/exemples/ol3-games/examples/map.audio.html).
 
 
 ## Licence
