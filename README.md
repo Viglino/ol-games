@@ -1,5 +1,4 @@
 # ol3-games
-==============
 
 One hand, many games use maps as playground and some are based on a map. On the other hand, [OpenLayers 3](https://github.com/openlayers/openlayers) is a high-performance, feature-packed library for creating interactive maps on the web.
 
