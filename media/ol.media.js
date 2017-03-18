@@ -29,13 +29,13 @@ ol.media.Media = function (options)
 	this.media = options.media;
 
 	// Dispatch media event as ol3 event
-	this.media.on( 'canplaythrough', function()
+	this.media.addEventListener( 'canplaythrough', function()
 		{	self.dispatchEvent({ type:'ready' });
-		});
+		}, false);
 	for (var event in { load:1, play:1, pause:1, ended:1 })
-	{	this.media.on( event, function(e)
+	{	this.media.addEventListener( event, function(e)
 		{	self.dispatchEvent({ type:e.type });
-		});
+		}), false;
 	}
 };
 ol.inherits (ol.media.Media, ol.Object);
@@ -45,52 +45,52 @@ ol.inherits (ol.media.Media, ol.Object);
 */
 ol.media.Media.prototype.play = function(start)
 {	if (start !== undefined) 
-	{	this.media.trigger('pause');
-		this.media.prop("currentTime",start);
+	{	this.media.pause();
+		this.media.currentTime = start;
 	}
-	this.media.trigger('play');
+	this.media.play();
 };
 
 /** Pause a media
 */
 ol.media.Media.prototype.pause = function()
-{	this.media.trigger('pause');
+{	this.media.pause();
 };
 
 /** Stop a media
 */
 ol.media.Media.prototype.stop = function()
-{	this.media.trigger('pause');
-	this.media.prop("currentTime",0);
+{	this.media.pause();
+	this.media.currentTime = 0;
 };
 
 /** Set the volume of the media
 * @param {number} v a number [0,1] the volume of the playback
 */
 ol.media.Media.prototype.setVolume = function(v)
-{	this.media.prop("volume",v);
+{	this.media.volume = v;
 };
 
 /** Get the volume of the media
 * @return {number} the current volume
 */
 ol.media.Media.prototype.getVolume = function()
-{	return this.media.prop("volume");
+{	return this.media.volume;
 };
 
 /** Sets whether the audio is muted or not
 * @param {bool|undefined} b true to mute, if undefined toggle mute
 */
 ol.media.Media.prototype.mute = function(b)
-{	if (!b && b!==false) this.media.prop("muted",!this.prop("muted"));
-	else this.media.prop("muted",b);
+{	if (!b && b!==false) this.media.muted = !this.media.muted;
+	else this.media.muted = b;
 };
 
 /** Return whether the audio is muted or not
 * @return {bool} 
 */
 ol.media.Media.prototype.isMuted = function(b)
-{	return this.media.prop("muted");
+{	return this.media.muted;
 };
 
 /** Sets the current playback position in the media (in seconds)
@@ -125,12 +125,12 @@ ol.media.Media.prototype.getDuration = function()
 * @param {boolean} b
 */
 ol.media.Media.prototype.setLoop = function(b)
-{	this.media.prop("loop", b);
+{	this.media.loop = b;
 };
 
 /** Returns whether the media should start over again when finished
 * @return {string} sound duration formated mm:ss
 */
 ol.media.Media.prototype.getLoop = function(b)
-{	return this.media.prop("loop");
+{	return this.media.loop;
 };
