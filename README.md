@@ -1,4 +1,4 @@
-# <img src="https://github.com/Viglino/OL3-games/raw/master/img/ol3-games.png" /> ol3-games
+# <img src="https://github.com/Viglino/OL3-games/raw/master/img/ol3-games.png" height="32px" /> ol3-games
 
 One hand, many games use maps as playground and some are based on a map. On the other hand, [OpenLayers 3](https://github.com/openlayers/openlayers) is a high-performance, feature-packed library for creating interactive maps on the web.
 
