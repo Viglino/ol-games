@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<!----------------------------------------------------------
+ 
+	Copyright (c) 2016 Jean-Marc VIGLINO, 
+	released under CeCILL-B (french BSD like) licence: http://www.cecill.info/
+	
+------------------------------------------------------------>
+<html>
+<head>
+	<title>OL3-ext: Profil GP</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<meta name="description" content="transform interaction for OL3" />
+	<meta name="keywords" content="ol3, vector, transform, rotate, scale, stretch" />
+
+	<link rel="stylesheet" href="../../examples/style.css" />
+
+	<!-- jQuery -->
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<!-- FontAwesome -->
+	<link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css" type="text/css" />
+
+	<!-- OL3 -->
+    <link rel="stylesheet" href="http://openlayers.org/en/master/css/ol.css" />
+	<script type="text/javascript" src="http://openlayers.org/en/master/build/ol.js"></script>
+
+	<!-- OL3-ext -->
+	<link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/dist/ol3-ext.css" />
+	<script type="text/javascript" src="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/dist/ol3-ext.js"></script>
+
+	<!-- game -->
+
+	<style>
+		#map
+		{	width:800px;
+			height:600px;
+		}
+		.options
+		{	position:absolute;
+			right: 1em;
+		}
+		
+		.framerate
+		{	color: green;
+			font-size: 2em;
+			display: inline-block;
+			width: 2em;
+			text-align: right;
+		}
+	</style>
+
+</head>
+<body >
+	<a href="https://github.com/Viglino/ol3-ext"><img style="position: absolute; top: 0; right: 0; border: 0; z-index:1" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+	<a href="../index.html">
+		<h1>Pac-Map</h1>
+	</a>
+	<div class="info">
+	</div>
+
+	<!-- Map div -->
+	<div id="map"></div>
+
+	<div class="options" >
+		<button onclick="game.play();"><i class="fa fa-play"></i></button>
+		<button onclick="game.pause();"><i class="fa fa-pause"></i></button>
+		<button onclick="game.pacman.goBack()"><i class="fa fa-step-backward"></i></button>
+		<button onclick="game.enableMap();"><i class="fa fa-hand-paper-o"></i></button>
+		<button onclick="game.generate();"><i class="fa fa-braille"></i></button>
+		<div><span class="framerate"></span> fps</div>
+	</div>
+	
+	<script type="text/javascript" src="../../utils/game.utils.js"></script>
+	<script type="text/javascript" src="../../utils/ol.geom.utils.js"></script>
+	<script type="text/javascript" src="../../graph/ol.graph.js"></script>
+	<script type="text/javascript" src="../../graph/ol.graph.vector.js"></script>
+	<script type="text/javascript" src="../../style/ol.style.sprite.js"></script>
+	<script type="text/javascript" src="../../feature/ol.sprite.js"></script>
+	<script type="text/javascript" src="../../media/ol.media.js"></script>
+	<script type="text/javascript" src="../../media/ol.media.audio.js"></script>
+	<script type="text/javascript" src="pacmap.js"></script>
+
+</body>
+</html>
