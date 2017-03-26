@@ -176,6 +176,8 @@ Game.prototype.initMap = function()
 			layers: layers,
 		});
 
+	map.addControl (new ol.control.FrameRate());
+
 	// Maze layer
 	var style = 
 	[	new ol.style.Style({ stroke: new ol.style.Stroke ({ color:"#0ff", width:26 }), zIndex:0 }),
