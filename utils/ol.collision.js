@@ -1,19 +1,34 @@
-﻿
+﻿/*	Copyright (c) 2017 Jean-Marc VIGLINO, 
+	released under the CeCILL-B license (French BSD license)
+	(http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
+	
+	@example http://www.hexographer.com/
+	
+*/
+/**
+* Class to handle collisions
+*
+* @constructor ol.Collision
+* @extends {ol.Object}
+* @param {olx.CollisionOptions=} options
+*	- resample {Integer} 
+*	- sprites {Arrary<ol.Sprite>} an array of sprites to test collision on each other
+*	- target {Arrary<ol.Sprite>} an array of sprites to test collision on
+* @todo 
+*/
 ol.Collision = function (options)
 {	
 	ol.Object.call(this);
 
-	this.map = options.map;
-	var self = this;
-	// Save current info
-	this.map.on("precompose", function (e)
-	{	self.e = e;
-		self.frameState = e.frameState;
-	});
+	this.game = options.game;
 
 	this.resample = options.resample || 1;
 	// Collision canvas
 	this.canvas = document.createElement('canvas');
+
+	// 
+	this.sprites = options.sprites || [];
+	this.targets = options.targets || [];
 };
 ol.inherits (ol.Collision, ol.Object);
 
@@ -21,16 +36,16 @@ ol.inherits (ol.Collision, ol.Object);
 */
 ol.Collision.prototype.getImage = function ()
 {	return this.canvas;
-}
+};
 
 /** Test if a sprite goes out of the current extent
 * @param {ol.Sprite} s1 the sprite to test
 * @return {N|S|E|W|false} the direction or false if 
 */
 ol.Collision.prototype.overflow = function (s1)
-{	if (!this.frameState) return false;
-	var e = this.frameState.extent;
-	var es = s1.getBBox(this.frameState.viewState.resolution);
+{	if (!this.game.frameState) return false;
+	var e = this.game.frameState.extent;
+	var es = s1.getBBox(this.game.frameState.viewState.resolution);
 	if (e[0]>es[0]) return "E";
 	if (e[1]>es[1]) return "N";
 	if (e[2]<es[2]) return "W";
@@ -39,8 +54,26 @@ ol.Collision.prototype.overflow = function (s1)
 };
 
 ol.Collision.prototype.getPixel = function (p)
-{	var m = this.frameState.coordinateToPixelTransform;
+{	var m = this.game.frameState.coordinateToPixelTransform;
 	return [ m[0]*p[0] + m[1]*p[1] +m[4], m[2]*p[0] + m[3]*p[1] +m[5] ];
+};
+
+/** Test collision and dispatch a collide event to the sprites that collide
+*	- If the collision object has no target sprites it will test the collision of the sprites on each other
+*	- If the collision object has target sprites it will test sprites that collide the targets sprites
+*/
+ol.Collision.prototype.dispatch = function ()
+{	if (!this.game.frameState) return;
+	var l = this.sprites.length;
+	for (var i=0; i<l-1; i++)
+	{	for (var j=i+1; j<l; j++)
+		{	t = this.collide(this.sprites[i], this.sprites[j]);
+			if (t)
+			{	this.sprites[i].dispatchEvent({ type:"collide", sprite:this.sprites[j], hit: t });
+				this.sprites[j].dispatchEvent({ type:"collide", sprite:this.sprites[i], hit: t });
+			}
+		}
+	}
 };
 
 /** Test collision beetween 2 sprites
@@ -48,16 +81,19 @@ ol.Collision.prototype.getPixel = function (p)
 * @param {ol.Sprite} s2 second sprite
 * @return {ol.coordinate | false} false if no collision detected, coordinate of the hit point
 */
-ol.Collision.prototype.test = function (s1, s2)
-{	if (!this.frameState) return false;
+ol.Collision.prototype.collide = function (s1, s2)
+{	if (!this.game.frameState) return false;
+	
 	// Intersect extent
-	var e1 = s1.getBBox(this.frameState.viewState.resolution);
-	var e2 = s2.getBBox(this.frameState.viewState.resolution);
+	var e1 = s1.getBBox(this.game.frameState.viewState.resolution);
+	var e2 = s2.getBBox(this.game.frameState.viewState.resolution);
 	if (!ol.extent.intersects(e1,e2)) return false;
+	
 	// Transform pixel to 
-	p1 = this.getPixel([e1[0],e1[1]]);
-	p2 = this.getPixel([e2[0],e2[1]]);
-	// Compose mage in a collision canvas
+	p1 = this.getPixel(e1);//[e1[0],e1[1]]);
+	p2 = this.getPixel(e2);//[e2[0],e2[1]]);
+
+	// Compose image in a collision canvas
 	var fac = this.resample;
 	var s = Math.trunc(s1.getImage().size * s1.getImage().getScale() /fac);
 	var c = this.canvas;
@@ -92,5 +128,4 @@ ol.Collision.prototype.test = function (s1, s2)
 			return [x*fac,y*fac];
 		}	
 	}
-
 };
