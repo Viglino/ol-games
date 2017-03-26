@@ -1,10 +1,10 @@
 /*
-	Copyright (c) 2016 Jean-Marc VIGLINO, 
+	Copyright (c) 2017 Jean-Marc VIGLINO, 
 	released under the CeCILL license (http://www.cecill.info/).
 	
 */
 
-/** Explosion animation: feature zoom in
+/** Explosion animation: show an explosion with a blast effect
 * @param {ol.featureAnimationExplodeOptions} options
 *	- radius {number} blast radius (in pixel), default 50
 *	- length {number} number of particles to use, default 12
