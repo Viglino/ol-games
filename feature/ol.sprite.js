@@ -93,8 +93,8 @@ ol.Sprite.prototype.setState = function (state, dt)
 
 /** Update sprite at dt (using the current state)
 */
-ol.Sprite.prototype.update = function (dt)
-{	return this.image.setState ( this.currentState, (dt-this.startState)/this.frate );
+ol.Sprite.prototype.update = function (e)
+{	return this.image.setState ( this.currentState, (e.frameState.time-this.startState)/this.frate );
 };
 
 ol.Sprite.prototype.setDestination = function (xy, speed)
@@ -114,7 +114,7 @@ ol.Sprite.prototype.setDirection = function (angle, speed)
 	this.dir = [ Math.sin(this.angle), Math.cos(this.angle) ];
 };
 
-ol.Sprite.prototype.getQuarter = function (dt)
+ol.Sprite.prototype.getQuarter = function ()
 {	switch ((Math.round(this.angle*2/Math.PI)+4)%4)
 	{	case 0: return "N"; break;
 		case 1: return "E"; break;
@@ -123,9 +123,9 @@ ol.Sprite.prototype.getQuarter = function (dt)
 	}
 };
 
-ol.Sprite.prototype.move = function (dt)
+ol.Sprite.prototype.move = function (e)
 {	var c = this.getCoordinate();
-	var dc = [ this.speed*this.dir[0]*dt, this.speed*this.dir[1]*dt ];
+	var dc = [ this.speed*this.dir[0]*e.dt, this.speed*this.dir[1]*e.dt ];
 	this.setCoordinate ([ c[0]+dc[0], c[1]+dc[1] ]);
 	if (this.destination)
 	{	if ( Math.sign(this.destination[0]-c[0]) != Math.sign(this.dir[0])
@@ -134,6 +134,7 @@ ol.Sprite.prototype.move = function (dt)
 			this.dispatchEvent({ type:'destination' });
 		}
 	}
+	this.update(e);
 };
 
 ol.Sprite.prototype.setSpeed = function (speed)
