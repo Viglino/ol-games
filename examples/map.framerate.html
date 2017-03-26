@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<!----------------------------------------------------------
+ 
+	Copyright (c) 2016 Jean-Marc VIGLINO, 
+	released under CeCILL-B (french BSD like) licence: http://www.cecill.info/
+	
+------------------------------------------------------------>
+	<title>OL3-games: Game loop</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<meta name="description" content="Game on a map with ol3" />
+	<meta name="keywords" content="ol3, game, gameloop, loop" />
+
+	<link rel="stylesheet" href="style.css" />
+
+	<!-- jQuery -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<!-- FontAwesome -->
+	<link rel="stylesheet" href="https://fontawesome.io/assets/font-awesome/css/font-awesome.css" type="text/css" />
+
+	<!-- OL3 -->
+    <link rel="stylesheet" href="https://openlayers.org/en/master/css/ol.css" />
+	<script type="text/javascript" src="https://openlayers.org/en/master/build/ol.js"></script>
+
+	<!-- OL3-ext -->
+	<link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/dist/ol3-ext.css" />
+	<script type="text/javascript" src="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/dist/ol3-ext.js"></script>
+
+	<!-- game -->
+	<script type="text/javascript" src="../game/ol.game.js"></script>
+	<script type="text/javascript" src="../utils/ol.collision.js"></script>
+	<script type="text/javascript" src="../control/frameratecontrol.js"></script>
+
+	<style>
+		#map
+		{	width:800px;
+			height:600px;
+			float: left;
+		}
+		.ol-control.ol-framerate
+		{	top:0.5em;
+			left: 0.5em;
+		}
+
+	</style>
+
+</head>
+<body >
+	<a href="https://github.com/Viglino/ol3-ext"><img style="position: absolute; top: 0; right: 0; border: 0; z-index:1" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+	<a href="../index.html">
+		<h1>OL3-ext: Game loop</h1>
+	</a>
+	<div class="info">
+		<p>
+			<i>ol.control.FrameRat</i> add a control to show graphically the framerate.
+		</p>
+	</div>
+
+	<!-- Map div -->
+	<div id="map"></div>
+
+	<div class="options" >
+		<h2>Options:</h2>
+		Speed: <input type="range" min="0.1" max="0.5" step="0.01" value="0.2" onchange="speed = parseFloat(this.value)" />
+		<br/>
+		Click on the map to change flying direction.
+	</div>
+	
+
+	<script type="text/javascript">
+		// Layers
+		var layer = new ol.layer.Tile({ preload:Infinity, source: new ol.source.Stamen({ layer: 'watercolor' }) });
+
+		// Overlay to add features on it
+		var overlay = new ol.layer.Vector({ source: new ol.source.Vector() });
+
+		// Angle, position and speed of the plane
+		var a = 0;
+		var center = [260064, 6250762];
+		var speed = 0.2;
+
+		// Add a plane to the overlay
+		var plane = new ol.Feature(new ol.geom.Point(center));
+		plane.setStyle ( new ol.style.Style({ image: new ol.style.Icon({ src: "img/Biploar_type4_1.png", scale:0.45 }), zIndex:1 }) );
+		var shadow = new ol.Feature(new ol.geom.Point(center));
+		shadow.setStyle ( new ol.style.Style({ image: new ol.style.Icon({ src: "img/Biploar_shadow.png", scale:0.3, opacity:0.4 }), zIndex:0 }) );
+
+		overlay.getSource().addFeatures([plane, shadow]);
+		
+		// Calculate a new direction 
+		function getDirection(pt)
+		{	if (pt) a = Math.atan2 ( pt[0]-center[0], pt[1]-center[1] ) - Math.PI/2;
+			else a = Math.random()*2*Math.PI;
+			plane.getStyle().getImage().setRotation(a + Math.PI/2);
+			shadow.getStyle().getImage().setRotation(a + Math.PI/2);
+		}
+
+		// New Game
+		var game = new ol.Game(
+			{	target: 'map',
+				zoom: 16,
+				center: center,
+				layers: [layer, overlay],
+			});
+		getDirection();
+
+		// Add frame rate control
+		game.addControl(new ol.control.FrameRate());
+
+		// Click on the map => calculate a new direction
+		game.getMap().on("click", function(e)
+		{	getDirection(e.coordinate);
+		})
+
+		// Game loop
+		game.on ("render", function(e)
+		{	center[0] += speed * e.dt * Math.cos(a);
+			center[1] -= speed * e.dt * Math.sin(a);
+			game.getView().setCenter(center);
+			plane.getGeometry().setCoordinates(center);
+			shadow.getGeometry().setCoordinates([center[0]+60, center[1]-80]);
+		});
+
+		// start game!
+		game.start();
+
+	</script>
+
+</body>
+</html>
