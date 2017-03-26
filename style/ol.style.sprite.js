@@ -17,21 +17,17 @@
 ol.style.Sprite = function (options)
 {	options = options || {};
 	
-	var radius = Math.round((options.size||64)/2);
-	ol.style.RegularShape.call (this,
-		{	radius: radius, 
-			points: 0,
-			fill: new ol.style.Fill({color: [0,0,0]}),
-			rotation: options.rotation,
-			snapToPixel: options.snapToPixel,
+	var canvas = document.createElement('canvas');
+	this.size = canvas.width = canvas.height = options.size||64;
+	ol.style.Icon.call (this,
+		{	img: canvas,
+			imgSize: [this.size, this.size],
+			scale: options.scale
 		});
 
-	this.setScale(options.scale)
-
-	this.size = this.getImage().width = this.getImage().height = options.size; 
 	this.offset = [0,0];
 
-	// Draw image
+	// Draw image in the canvas
 	var img, self = this;
 	if (options.img) img = this.img_ = options.img;
 	else
@@ -40,14 +36,14 @@ ol.style.Sprite = function (options)
 		img.src = options.src;
 	}
 
-	if (img.width) self.drawImage_();
+	if (img.width) this.drawImage_();
 	else img.onload = function()
 	{	self.drawImage_();
 		// Force change
-		if (self.onload_) self.onload_();
+		//if (self.onload_) self.onload_();
 	};
 };
-ol.inherits (ol.style.Sprite, ol.style.RegularShape);
+ol.inherits (ol.style.Sprite, ol.style.Icon);
 
 ol.style.Sprite.prototype.drawImage_ = function()
 {	var ctx = this.getImage().getContext("2d");
