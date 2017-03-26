@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Ol3-games</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<meta name="description" content="Add game machanisms to Openlayers 3 (OL3)" />
+	<meta name="keywords" content="ol3,ol3-ext,games,animation,prite" />
+	
+<style>
+	body
+	{	font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
+		font-size: 16px;
+		margin: 0.5em;
+	}
+	a 
+	{	color: #337ab7;
+		text-decoration: none;
+	}
+	.navbar 
+	{	top:0; left: 0;
+		right: 0;
+		width:100%;
+		position: fixed;
+		z-index: 0;
+		background-color: #1f6b75;
+		color: white;
+	}
+	.navbar img
+	{	height:2.5em;
+		vertical-align: middle;
+	}
+	.navbar h1
+	{	display: inline-block;
+		font-size:1.5em;
+		margin: 0.5em;
+	}
+	h2
+	{	clear:both;
+		margin:1em 0 0;
+	}
+	.container
+	{	width:1170px;
+		max-width: 100%;
+		margin:auto;
+	}
+
+	.small, small 
+	{	font-size: 0.85em;
+	}
+
+	#examples
+	{	margin-top:6em;
+	}
+	#examples > div > div
+	{	box-sizing: border-box;
+		display: inline-block;
+		float: left;
+		padding: 0.5em;
+		width: 33.3333%;
+	}
+	@media (max-width: 1500px) 
+	{	#examples > div > div
+		{	width: 50%;
+		}
+	}
+	@media (max-width: 900px) 
+	{	#examples > div > div
+		{	width: 100%;
+		}
+	}
+
+	.example,
+	.desc 
+	{	background-color: #f5f5f5;
+		margin: 0;
+		overflow: auto;
+		padding: 10px;
+	}
+	#examples > div.desc
+	{	margin:-0.5em 0 1em;
+		padding:1em;
+		width:100%;
+		box-sizing: content-box;
+	}
+	
+	.example:hover
+	{	background-color: #ddd;
+	}
+	.example p.description 
+	{	font-size: 0.9em;
+		margin: 5px 0;
+	}
+	.example p.tag
+	{	font-size: 0.8em;
+		color:#693;
+		margin: 0;
+	}
+	.example img
+	{	display:none;
+		margin:auto;
+		float:right;
+		width:180px;
+	}
+
+	
+</style>
+
+	<!-- jQuery -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function()
+		{	$(".example").wrap($("<div>"));
+
+			$(".example a.mainlink").each(function()
+			{	var href = /[^\/]*$/.exec( $(this).attr('href') ).pop();
+				$("<small>").text("("+href+")")
+						.appendTo($(this));
+				$("<img>").attr('src',"img/"+href.replace('html',$(this).data('img')||'jpg'))
+					.appendTo($(this))
+					.load(function(e)
+					{	$(this).show();
+					})
+			})
+
+			$('#keywords').on('keyup', function()
+			{	var s = new RegExp ( $(this).val() , "i");
+				var k = 0;
+				$(".example").each(function()
+				{	var text = $(this).text();
+					var t = s.test(text);
+					if (!t) 
+					{	$(this).parent().hide();
+					}
+					else 
+					{	k++;
+						$(this).parent().show();
+					}
+				});
+				$("h2").each(function()
+				{	if ($(".example:visible", $(this).next()).length) $(this).show();
+					else $(this).hide();
+				});
+				$("#count").text("("+k+")");
+				// Set new url
+				window.history.replaceState (null,null, document.location.origin+document.location.pathname+"?q="+$(this).val());
+			});
+
+			// Decode url
+			var search = window.location.search.replace(/^\?/,"").split("&");
+			for (var i=0; i<search.length; i++) if (/^q=/.test(search[i]))
+			{	$("#keywords").val(search[i].split("=")[1]).trigger("keyup");
+			}
+		});
+	</script>
+</head>
+
+<body>
+	<header role="navigation" class="navbar navbar-fixed-top">
+		<div class="container">
+			<h1><img src="img/ol3-games-white.png">&nbsp;OL3-games</h1>
+			<input type="text" placeholder="Search" class="search-query" id="keywords" name="q">
+			<span id="count"></span>
+		</div>
+	</header>
+	<div id="examples">
+	<a href="https://github.com/Viglino/ol3-games"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+	
+	<div class="desc">
+		Game stuff for OL3, powered by HTML5, canvas, javascript and Openlayers 3. 
+		<br />
+		<br />
+		ol3-games uses <a href="http://viglino.github.io/ol3-ext/">OL3-ol3-ext</a>
+		-
+		If you like this, you may like <a href="http://viglino.github.io/OL3-AnimatedCluster/">OL3-AnimatedCluster</a>
+	</div>
+
+		
+	<h2>Utilities</h2>
+		<div>
+
+			<div class="example">
+				<a class="mainlink" href="examples/map.gameloop.html">
+					<strong>Gameloop</strong><br>
+				</a>
+				<p class="description">
+					The <i>ol.Grame</i> implement a game loop based on the postcompose event of a map.
+				</p>
+				<p class="tag">game, gameloop</p>
+			</div>
+
+			<div class="example">
+				<a class="mainlink" href="examples/map.control.framerate.html">
+					<strong>Frame rate control</strong><br>
+				</a>
+				<p class="description">The <i>ol.control.Framerate</i> is a control that show graphically the current framerate.</p>
+				<p class="tag">game, animation, framerate</p>
+			</div>
+
+			<div class="example">
+				<a class="mainlink" href="examples/map.hexmap.html">
+					<strong>Hexagon map</strong><br>
+				</a>
+				<p class="description">
+					<i>ol.source.HexMap</i> is an image source that render an hexagonal grid on a map. 
+					The <i>ol.Hexgrid</i> object has function to convert from coordinate to hex or calculate lines beetween hexagons.
+				</p>
+				<p class="tag">map, hexmap, hexagon, grid, hexgrid</p>
+			</div>
+
+		</div>
+
+	<h2>Sprite</h2>
+		<div>
+
+			<div class="example">
+				<a class="mainlink" href="examples/map.sprite.html">
+					<strong>Sprites!</strong><br>
+				</a>
+				<p class="description">
+					<i>ol.Sprite</i> is a convenient class to handle features with a <i>ol.style.sprite</i> and usefull fuctions. 
+					It also can handle collisions beetween other sprites or a layer.</p>
+				<p class="tag">game, animation, sprite, collision</p>
+			</div>
+
+		</div>
+
+	<h2>Animation</h2>
+		<div>
+
+			<div class="example">
+				<a class="mainlink" href="examples/map.explode.html">
+					<strong>Explosions!</strong><br>
+				</a>
+				<p class="description">An <i>ol.feature.Animation</i> to make explosions on the map.</p>
+				<p class="tag">game, animation, audio, explosion</p>
+			</div>
+
+		</div>
+
+	<h2>Sound/music</h2>
+		<div>
+
+			<div class="example">
+				<a class="mainlink" href="examples/map.audio.html">
+					<strong>Audio on a map</strong><br>
+				</a>
+				<p class="description">Usefull class to handle audio API.</p>
+				<p class="tag">game, audio, media, sound</p>
+			</div>
+
+		</div>
+
+
+	<h2>Full games</h2>
+		<div>
+
+		</div>
+
+
+</body>
+</html>
