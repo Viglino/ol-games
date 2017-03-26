@@ -20,7 +20,7 @@ ol.media.Audio = function (options)
 	var a = new Audio(options.source);
 	a.load();
 	// Create HTML5 audio
-	ol.media.Media.call(this, { media: a });
+	ol.media.Media.call(this, { media: a, loop: options.loop });
 };
 ol.inherits (ol.media.Audio, ol.media.Media);
 

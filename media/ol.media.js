@@ -28,6 +28,8 @@ ol.media.Media = function (options)
 
 	this.media = options.media;
 
+	if (options.loop) this.setLoop(options.loop);
+
 	// Dispatch media event as ol3 event
 	this.media.addEventListener( 'canplaythrough', function()
 		{	self.dispatchEvent({ type:'ready' });
