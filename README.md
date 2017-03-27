@@ -5,6 +5,8 @@ One hand, many games use maps as playground and some are based on a map. On the 
 This project tends to test and add game mechanisms within OL3 (Openlayers 3).
 > It is by no means a complete game or complete game engine but you should some stuff to devleopp game on a map with OL3.
 
+[View live examples online!](https://viglino.github.io/ol3-games/index.html)
+
 ## Dependencies
 This project uses [OL3](https://github.com/openlayers/openlayers), [OL3-ext]() and [jQuery](https://github.com/jquery/jquery).
 Hexagnol grid concepts developped in the [Red Blob Games](http://www.redblobgames.com/grids/hexagons/).
