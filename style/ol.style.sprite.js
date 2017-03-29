@@ -32,9 +32,11 @@ ol.style.Sprite = function (options)
 	if (options.img) img = this.img_ = options.img;
 	else
 	{	img = this.img_ = new Image();
-		if (options.crossOrigin) img.crossOrigin = options.crossOrigin;
+		img.crossOrigin = options.crossOrigin || "anonymous";
 		img.src = options.src;
 	}
+
+	if (options.states) this.states = options.states;
 
 	if (img.width) this.drawImage_();
 	else img.onload = function()
@@ -51,8 +53,13 @@ ol.style.Sprite.prototype.drawImage_ = function()
 	ctx.drawImage(this.img_, this.offset[0], this.offset[1], this.size, this.size, 0, 0, this.size, this.size);
 };
 
+/** Universal LPC Spritesheet Character
+* http://lpc.opengameart.org/
+* https://github.com/jrconway3/Universal-LPC-spritesheet
+* https://github.com/Gaurav0/Universal-LPC-Spritesheet-Character-Generator
+*/
 ol.style.Sprite.prototype.states = 
-{	idel: { line: 2, length: 1 },
+{	idle: { line: 2, length: 1 },
 	encant_N: { line: 0, length: 7 },
 	encant_W: { line: 1, length: 7 },
 	encant_S: { line: 2, length: 7 },
@@ -61,29 +68,29 @@ ol.style.Sprite.prototype.states =
 	thrust_W: { line: 5, length: 8 },
 	thrust_S: { line: 6, length: 8 },
 	thrust_E: { line: 7, length: 8 },
-	walk_N: { line: 8, length: 9 },
-	walk_W: { line: 9, length: 9 },
-	walk_S: { line:10, length: 9 },
-	walk_E: { line:11, length: 9 },
-	slash_N: { line: 12, length: 5 },
-	slash_W: { line: 13, length: 5 },
-	slash_S: { line: 14, length: 5 },
-	slash_E: { line: 15, length: 5 },
-	shoot_N: { line: 16, length: 12 },
-	shoot_W: { line: 17, length: 12 },
-	shoot_S: { line: 18, length: 12 },
-	shoot_E: { line: 18, length: 12 },
-	hurt: { line: 19, length: 5 }
+	walk_N: { line: 8, start:1, length: 8 },
+	walk_W: { line: 9, start:1, length: 8 },
+	walk_S: { line:10, start:1, length: 8 },
+	walk_E: { line:11, start:1, length: 8 },
+	slash_N: { line: 12, length: 6 },
+	slash_W: { line: 13, length: 6 },
+	slash_S: { line: 14, length: 6 },
+	slash_E: { line: 15, length: 6 },
+	shoot_N: { line: 16, length: 13 },
+	shoot_W: { line: 17, length: 13 },
+	shoot_S: { line: 18, length: 13 },
+	shoot_E: { line: 19, length: 13 },
+	hurt: { line: 20, length: 6 }
 };
 
 ol.style.Sprite.prototype.setState = function (st, step)
 {	var state = this.states[st] || {};
-	var offset = [(Math.trunc(step)%(state.length||9))*(state.size||this.size), (state.line||0)*(state.size||this.size)];
+	var offset = [((state.start||0)+(Math.trunc(step)%(state.length)))*(state.size||this.size), (state.line||0)*(state.size||this.size)];
 	if (offset[0] != this.offset[0] || offset[1] != this.offset[1])
 	{	this.offset = offset;
 		this.drawImage_();
 	}
-	return step >= state.length;
+	return step+1 >= state.length;
 };
 
 ol.style.Sprite.prototype.setAnchor = function (a)
