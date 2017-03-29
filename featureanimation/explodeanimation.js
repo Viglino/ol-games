@@ -67,6 +67,7 @@ ol.featureAnimation.Explode.prototype.animate = function (e)
 
 			e.context.globalCompositeOperation = "lighter";
 			e.context.fillStyle = this.gradient;
+			e.context.scale(ratio,ratio);
 			
 			var ds, r;
 			for (var i=0, p; p=this.particules[i]; i++)
