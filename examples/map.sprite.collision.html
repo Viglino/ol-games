@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<!----------------------------------------------------------
+ 
+	Copyright (c) 2016 Jean-Marc VIGLINO, 
+	released under CeCILL-B (french BSD like) licence: http://www.cecill.info/
+	
+------------------------------------------------------------>
+	<title>OL3-games: Game</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<meta name="description" content="transform interaction for OL3" />
+	<meta name="keywords" content="ol3, vector, transform, rotate, scale, stretch" />
+
+	<link rel="stylesheet" href="style.css" />
+
+	<!-- jQuery -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<!-- FontAwesome -->
+	<link rel="stylesheet" href="https://fontawesome.io/assets/font-awesome/css/font-awesome.css" type="text/css" />
+
+	<!-- OL3 -->
+    <link rel="stylesheet" href="https://openlayers.org/en/master/css/ol.css" />
+	<script type="text/javascript" src="https://openlayers.org/en/master/build/ol.js"></script>
+
+	<!-- OL3-ext -->
+	<link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/dist/ol3-ext.css" />
+	<script type="text/javascript" src="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/dist/ol3-ext.js"></script>
+	<link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/overlay/popupoverlay.anim.css" />
+
+	<!-- game -->
+	<script type="text/javascript" src="../game/ol.game.js"></script>
+	<script type="text/javascript" src="../game/ol.offscreen.js"></script>
+	<script type="text/javascript" src="../style/ol.style.sprite.js"></script>
+	<script type="text/javascript" src="../feature/ol.sprite.js"></script>
+	<script type="text/javascript" src="../game/ol.collision.js"></script>
+	<script type="text/javascript" src="../control/frameratecontrol.js"></script>
+
+	<style>
+		#map
+		{	width:800px;
+			height:600px;
+			float: left;
+		}
+		#pattern canvas,
+		#clayer canvas
+		{	border: 5px solid #369;
+			vertical-align: middle;
+			background-image:
+				-moz-linear-gradient(45deg, rgba(0,0,0,0.05) 25%, transparent 25%), 
+				-moz-linear-gradient(-45deg, rgba(0,0,0,0.05) 25%, transparent 25%),
+				-moz-linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.05) 75%),
+				-moz-linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.05) 75%);
+			background-image:
+				-webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, rgba(0,0,0,0.05)), color-stop(.25, transparent)), 
+				-webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(0,0,0,0.05)), color-stop(.25, transparent)),
+				-webkit-gradient(linear, 0 100%, 100% 0, color-stop(.75, transparent), color-stop(.75, rgba(0,0,0,0.05))),
+				-webkit-gradient(linear, 0 0, 100% 100%, color-stop(.75, transparent), color-stop(.75, rgba(0,0,0,0.05)));
+
+			-moz-background-size: 20px 20px;
+			background-size: 20px 20px;
+			-webkit-background-size: 20px 20px; /* override value for shitty webkit */
+    
+			background-position:0 0, 10px 0, 10px -10px, 0px 10px;
+		}
+		.ol-control.ol-framerate
+		{	top:0.5em;
+			right: 0.5em;
+		}
+	</style>
+
+</head>
+<body >
+	<a href="https://github.com/Viglino/ol3-ext"><img style="position: absolute; top: 0; right: 0; border: 0; z-index:1" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+	<a href="../index.html">
+		<h1>OL3-ext: Game</h1>
+	</a>
+	<div class="info">
+	</div>
+
+	<!-- Map div -->
+	<div id="map"></div>
+
+	<div class="options" >
+		<h2>Options:</h2>
+		
+		<div id="pattern">Collision Map:</div>
+		<div id="clayer">Collision Layer:</div>
+		
+		<ul>
+			
+		</ul>
+	</div>
+	
+
+	<script type="text/javascript">
+		// Layers
+		var layer = new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'watercolor' }) });
+		var labels = new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'toner-labels' }), title:"labels" });
+
+		// Popup overlay
+		var popup = new ol.Overlay.Popup (
+		{	popupClass: "default", //"tooltips", "warning" "black" "default", "tips", "shadow",
+			positioning: "bottom-left",
+			offset: [0,-20],
+			autoPan: false
+		});
+
+		// The map
+		var map = new ol.Map
+			({	target: 'map',
+				loadTilesWhileAnimating: true,
+				loadTilesWhileInteracting: true,
+				view: new ol.View
+				({	zoom: 11,
+					center: [260064, 6250762]
+				}),
+				controls: ol.control.defaults({ "attribution": false }),
+				layers: [layer, labels],
+				overlays: [popup]
+			});
+		
+		var offmap = new ol.Offscreen({ map:map, layers: [labels], resample:1 });
+		$(offmap.canvas).appendTo("#clayer");
+
+		var caractere = new ol.layer.Vector({ source: new ol.source.Vector() });
+		map.addLayer(caractere);
+		var vector = new ol.layer.Vector({ source: new ol.source.Vector() });
+		map.addLayer(vector);
+
+		var orc = new ol.Sprite(
+		{	name:"Orc",
+			position: map.getView().getCenter(),
+			src: "data/orc.png",
+			size: 64,
+			scale: 1.5,
+			crossOrigin: "anonymous"
+		});
+		caractere.getSource().addFeature(orc);
+		orc.setDestination(orc.getCoordinate(), 10);
+		orc.setState("walk_"+orc.getQuarter());
+		orc.on("destination", function()
+		{	orc.ismoving = false;
+			orc.setState("idel");
+		});
+
+		map.on ("click", function(e)
+		{	orc.setDestination(e.coordinate);
+			orc.setState("walk_"+orc.getQuarter());
+			orc.ismoving = true;
+		});
+
+		var elf = new ol.Sprite(
+		{	name:"Robin",
+			position: map.getView().getCenter(),
+			src: "data/robin.png",
+			size: 64,
+			scale: 1.5,
+			crossOrigin: "anonymous"
+		});
+		caractere.getSource().addFeature(elf);
+
+		function getDestination()
+		{	var e = map.getView().calculateExtent(map.getSize());
+			return [
+					e[0]+(e[2]-e[0])*Math.random(),
+					e[1]+(e[3]-e[1])*Math.random()
+				]
+		}
+		elf.setDestination(getDestination(),5);
+		elf.setState("walk_"+elf.getQuarter());
+		elf.on("destination", function () 
+		{	elf.setDestination(getDestination());
+			elf.setState("walk_"+elf.getQuarter());
+		})
+
+		// New Game
+		var game = new ol.Game({ map: map });
+
+		map.addControl(new ol.control.FrameRate());
+		
+		// Add collision test
+		/*
+		var collision = new ol.Collision({map: map, sprites: [elf, orc]});
+		$("#pattern").append(collision.getImage());
+		game.addCollision (collision);
+		orc.on("collide", function(e)
+		{	console.log("hello!");
+		});
+		*/
+		$("#pattern").append(game.collision.getImage());
+
+		// Game loop
+		game.on ("render", function(e)
+		{	if (game.collide (orc, elf))
+			{	//console.log("collision");
+				popup.show(orc.getCoordinate(), "Hello!");
+			}
+			else
+			{	popup.hide();
+				orc.move(e);
+			}
+			elf.move(e);
+			// Test collision with the labels
+			if (offmap.collide(orc)) console.log("collide");
+		});
+		// start game!
+		game.start();
+
+	</script>
+
+</body>
+</html>
