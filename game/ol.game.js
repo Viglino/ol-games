@@ -30,13 +30,16 @@ ol.Game = function(options)
 				controls: [],
 				layers: options.layers,
 			});
+	if (options.controls) for (var i=0; i<options.controls.length; i++) map.addControl(options.controls[i]);
+	
 	// Set the map and the game loop (postcompose hook)
 	this.setMap(map);
 	this.pause_ = true;
 
+
 	this.collisions = [];
 	
-	this.collision = new ol.Collision({ game: this, resample: options.collisionResample });
+	this.collision = ol.Collision ? new ol.Collision({ game: this, resample: options.collisionResample }) : { collide:function(){ console.warn("ol.collision.js not found!"); } }; 
 
 };
 ol.inherits (ol.Game, ol.Object);
