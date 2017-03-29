@@ -14,6 +14,7 @@ if (!Math.trunc) Math.trunc = function(x) { return x < 0 ? Math.ceil(x) : Math.f
  * A feature as a sprite (with a sprite style and states).
  *
  * @constructor
+ * @trigger 
  * @param {olx.SpriteOptions=} options Options, extend olx.StyleSpriteOptions.
  *	- name {string} name of the sprite (to be display on top of his head)
  *	- frameRate {number} frame rate for the state 
@@ -27,7 +28,7 @@ ol.Sprite = function (options)
 	this.coord = new ol.geom.Point(options.position || [0,0]);
 	ol.Feature.call (this, this.coord);
 	
-	var style = new ol.style.Style(
+	this.style = new ol.style.Style(
 			{	image: new ol.style.Sprite(options),
 				text: new ol.style.Text(
 					{	font: 'bold 12px helvetica,sans-serif',
@@ -38,12 +39,14 @@ ol.Sprite = function (options)
 						fill: new ol.style.Fill({ color: "#333" })
 					})
 			});
-	this.setStyle([ style ]);
-	this.style = style;
-	this.image = style.getImage();
+	this.setStyle([ this.style ]);
+	this.image = this.style.getImage();
+
 	this.frate = options.frameRate || 100;
 	this.currentState = "idle";
 	this.startState = 0;
+	this.speed = 0;
+	this.dir = [0,0];
 };
 ol.inherits (ol.Sprite, ol.Feature);
 
@@ -75,6 +78,34 @@ ol.Sprite.prototype.getImage = function ()
 {	return this.image;
 };
 
+/** Set the sprite rotation
+* @param {number} a rotation angle in radian
+*/
+ol.Sprite.prototype.setRotation = function (a)
+{	this.style.getImage().setRotation(a);
+	plane.changed();
+};
+/** get the sprite rotation
+* @return {number} rotation angle in radian
+*/
+ol.Sprite.prototype.getRotation = function ()
+{	return this.style.getImage().getRotation();
+};
+
+/** Set the sprite scale
+* @param {number} s the srite scale
+*/
+ol.Sprite.prototype.setScale = function (s)
+{	this.style.getImage().setScale(s);
+	plane.changed();
+};
+/** get the sprite scale
+* @return {number} the srite scale
+*/
+ol.Sprite.prototype.getScale = function ()
+{	return this.style.getImage().getScale();
+};
+
 /** Get the sprite extent
 */
 ol.Sprite.prototype.getBBox = function (res)
@@ -87,14 +118,17 @@ ol.Sprite.prototype.getBBox = function (res)
 */
 ol.Sprite.prototype.setState = function (state, dt)
 {	this.currentState = state;
-	this.image.setState ( this.currentState, 0 );
 	this.startState = dt || (new Date()).getTime();
+	this.dispatchEvent({ type:'state', state:this.currentState, end: false });
+	return this.image.setState ( this.currentState, 0 );
 };
 
 /** Update sprite at dt (using the current state)
 */
 ol.Sprite.prototype.update = function (e)
-{	return this.image.setState ( this.currentState, (e.frameState.time-this.startState)/this.frate );
+{	var b = this.image.setState ( this.currentState, (e.frameState.time-this.startState)/this.frate );
+	if (b) this.dispatchEvent({ type:'state', state:this.currentState, end: true });
+	return b;
 };
 
 ol.Sprite.prototype.setDestination = function (xy, speed)
