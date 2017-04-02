@@ -1,8 +1,6 @@
 /*	Copyright (c) 2017 Jean-Marc VIGLINO, 
 	released under the CeCILL-B license (French BSD license)
 	(http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
-
-	https://jeux.developpez.com/medias/
 */
 
 // Polyfill
@@ -33,7 +31,7 @@ ol.Sprite = function (options)
 				text: new ol.style.Text(
 					{	font: 'bold 12px helvetica,sans-serif',
 						text: options.name || "",
-						offsetY: -options.size/2*options.scale,
+						offsetY: -(options.size||64)/2*options.scale,
 						textBaseline: 'alphabetic',
 						stroke: new ol.style.Stroke({ color: [255,255,255,0.5], width:5 }),
 						fill: new ol.style.Fill({ color: "#333" })
@@ -55,6 +53,7 @@ ol.inherits (ol.Sprite, ol.Feature);
 */
 ol.Sprite.prototype.setName = function (name)
 {	this.style.getText().setText(name);
+	this.changed()
 };
 
 /** Move the sprite to the coordinates
@@ -70,6 +69,14 @@ ol.Sprite.prototype.setCoordinate = function (c)
 ol.Sprite.prototype.getCoordinate = function ()
 {	return this.coord.getCoordinates();
 };
+
+/** Set the sprite geometry
+* @param {ol.geom.Geometry} g
+*/
+ol.Sprite.prototype.setGeometry = function (g)
+{	this.coord = g;
+	ol.Feature.call (this, g);
+}
 
 /** Get the sprite style
 * @return {ol.style.Sprite}
@@ -120,6 +127,7 @@ ol.Sprite.prototype.setState = function (state, dt)
 {	this.currentState = state;
 	this.startState = dt || (new Date()).getTime();
 	this.dispatchEvent({ type:'state', state:this.currentState, end: false });
+	this.endState = false;
 	return this.image.setState ( this.currentState, 0 );
 };
 
@@ -127,25 +135,37 @@ ol.Sprite.prototype.setState = function (state, dt)
 */
 ol.Sprite.prototype.update = function (e)
 {	var b = this.image.setState ( this.currentState, (e.frameState.time-this.startState)/this.frate );
-	if (b) this.dispatchEvent({ type:'state', state:this.currentState, end: true });
+	if (b && !this.endState) 
+	{	this.dispatchEvent({ type:'state', state:this.currentState, end: true });
+		this.endState = true;
+	}
 	return b;
 };
 
-ol.Sprite.prototype.setDestination = function (xy, speed)
-{	this.destination = xy;
-	if (speed != undefined) this.speed = speed;
-	if (xy)
-	{	var c = this.getCoordinate();
-		this.angle = Math.atan2(this.destination[0]-c[0], this.destination[1]-c[1]);
+ol.Sprite.prototype.setPath = function (coords, speed)
+{	if (speed != undefined) this.speed = speed;
+	if (coords && coords.length)
+	{	this.path = coords;
+		this.destination = 1;
+		this.moving_ = true;
+		this.angle = Math.atan2(this.path[1][0]-this.path[0][0], this.path[1][1]-this.path[0][1]);
 		this.dir = [ Math.sin(this.angle), Math.cos(this.angle) ];
+		this.setCoordinate(this.path[0]);
+		this.dispatchEvent({ type:'change:direction', angle:this.angle });
 	}
+}
+
+ol.Sprite.prototype.setDestination = function (xy, speed)
+{	this.setPath([this.getCoordinate(), xy], speed)
 };
 
 ol.Sprite.prototype.setDirection = function (angle, speed)
 {	this.destination = false;
+	this.moving_ = true;
 	if (speed != undefined) this.speed = speed;
 	this.angle = angle;
 	this.dir = [ Math.sin(this.angle), Math.cos(this.angle) ];
+	this.dispatchEvent({ type:'change:direction', angle:this.angle });
 };
 
 ol.Sprite.prototype.getQuarter = function ()
@@ -157,16 +177,69 @@ ol.Sprite.prototype.getQuarter = function ()
 	}
 };
 
+ol.Sprite.prototype.moving = function ()
+{	return this.moving_;
+};
+ol.Sprite.prototype.stop = function ()
+{	this.moving_ = false;
+};
+ol.Sprite.prototype.restart = function ()
+{	this.moving_ = true;
+};
+
 ol.Sprite.prototype.move = function (e)
-{	var c = this.getCoordinate();
-	var dc = [ this.speed*this.dir[0]*e.dt, this.speed*this.dir[1]*e.dt ];
-	this.setCoordinate ([ c[0]+dc[0], c[1]+dc[1] ]);
-	if (this.destination)
-	{	if ( Math.sign(this.destination[0]-c[0]) != Math.sign(this.dir[0])
-		 || Math.sign(this.destination[1]-c[1]) != Math.sign(this.dir[1]) )
-		{	this.setCoordinate (this.destination);
-			this.dispatchEvent({ type:'destination' });
+{	if (this.moving_)
+	{	var c = this.getCoordinate();
+		var dc = [ this.speed*this.dir[0]*e.dt, this.speed*this.dir[1]*e.dt ];
+		
+		c[0] += dc[0];
+		c[1] += dc[1];
+		
+		if (this.destination)
+		{	// Reach the destination
+			if ( Math.sign(this.path[this.destination][0]-c[0]) != Math.sign(this.dir[0])
+			 || Math.sign(this.path[this.destination][1]-c[1]) != Math.sign(this.dir[1]) )
+			{	this.destination++;
+				// End of the path ?
+				if (this.destination >= this.path.length)
+				{	this.stop();
+					this.setCoordinate (this.path[this.destination-1]);
+					this.destination = 0;
+					this.dispatchEvent({ type:'destination' });
+				}
+				else
+				{	// Overpass ?
+					var dl = ol.coordinate.dist2d (c, this.path[this.destination-1]);
+					while(true)
+					{	var ds = ol.coordinate.dist2d(this.path[this.destination], this.path[this.destination-1]);
+						if (ds > dl) break;
+						else
+						{	dl -= ds;
+							this.destination++;
+							// End of the path ?
+							if (this.destination >= this.path.length)
+							{	this.stop();
+								this.setCoordinate (this.path[this.destination-1]);
+								this.destination = 0;
+								this.dispatchEvent({ type:'destination' });
+								return;
+							}
+						}
+					}
+					
+					// New position on end of the segment
+					this.setCoordinate (this.path[this.destination-1]);
+					this.angle = Math.atan2(this.path[this.destination][0]-this.path[this.destination-1][0], this.path[this.destination][1]-this.path[this.destination-1][1]);
+					this.dir = [ Math.sin(this.angle), Math.cos(this.angle) ];
+					this.dispatchEvent({ type:'change:direction', angle:this.angle });
+
+					// Move remain dist
+					this.move({ type:e.type, dt: dl/this.speed, frameState: e.frameState });
+				}
+			}
+			else this.setCoordinate (c);
 		}
+		else this.setCoordinate (c);
 	}
 	this.update(e);
 };
