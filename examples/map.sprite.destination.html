@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<!----------------------------------------------------------
+ 
+	Copyright (c) 2016 Jean-Marc VIGLINO, 
+	released under CeCILL-B (french BSD like) licence: http://www.cecill.info/
+	
+------------------------------------------------------------>
+	<title>OL3-games: Sprite destination</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<meta name="description" content="transform interaction for OL3" />
+	<meta name="keywords" content="ol3, vector, transform, rotate, scale, stretch" />
+
+	<link rel="stylesheet" href="style.css" />
+
+	<!-- jQuery -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<!-- FontAwesome -->
+	<link rel="stylesheet" href="https://fontawesome.io/assets/font-awesome/css/font-awesome.css" type="text/css" />
+
+	<!-- OL3 -->
+    <link rel="stylesheet" href="https://openlayers.org/en/master/css/ol.css" />
+	<script type="text/javascript" src="https://openlayers.org/en/master/build/ol.js"></script>
+
+	<!-- OL3-ext -->
+	<link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/dist/ol3-ext.css" />
+	<script type="text/javascript" src="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/dist/ol3-ext.js"></script>
+	<link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/overlay/popupoverlay.anim.css" />
+
+	<!-- game -->
+	<script type="text/javascript" src="../game/ol.game.js"></script>
+	<script type="text/javascript" src="../style/ol.style.sprite.js"></script>
+	<script type="text/javascript" src="../feature/ol.sprite.js"></script>
+	<script type="text/javascript" src="../control/frameratecontrol.js"></script>
+
+	<style>
+		#map
+		{	width:800px;
+			height:600px;
+			float: left;
+		}
+		.ol-control.ol-framerate
+		{	top:0.5em;
+			right: 0.5em;
+		}
+		textarea
+		{	vertical-align: top;
+		}
+	</style>
+
+</head>
+<body >
+	<a href="https://github.com/Viglino/ol3-ext"><img style="position: absolute; top: 0; right: 0; border: 0; z-index:1" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+	<a href="../index.html">
+		<h1>OL3-ext: Sprite destination</h1>
+	</a>
+	<div class="info">
+		This example show how to give a destination to a sprite.
+		<br/>
+		You just have to use the <i>ol.Sprite.setDestination()</i> to set the destination you want to go. 
+		Then just call <i>ol.Sprite.move()</i> in the game loop to have the sprite moving to that point.
+		<br/>
+		Listen to <i>destination</i> event to know when the sprite reach the final destination.
+	</div>
+
+	<!-- Map div -->
+	<div id="map"></div>
+
+	<div class="options" >
+		<h2>Options:</h2>
+		<ul>
+			<li>
+				Name: <textarea type="text" onkeyup="orc.setName(this.value)">Orky</textarea>
+			</li>
+		</ul>
+		Click on the map to move Orky.
+	</div>
+	
+
+	<script type="text/javascript">
+		// Layers
+		var layer = new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'watercolor' }) });
+
+		// Popup overlay
+		var popup = new ol.Overlay.Popup (
+		{	popupClass: "default",
+			positioning: "bottom-left",
+			offset: [0,-20],
+			autoPan: false
+		});
+
+		// The map
+		var map = new ol.Map
+			({	target: 'map',
+				loadTilesWhileAnimating: true,
+				loadTilesWhileInteracting: true,
+				view: new ol.View
+				({	zoom: 11,
+					center: [260064, 6250762]
+				}),
+				controls: ol.control.defaults({ "attribution": false }),
+				layers: [layer],
+				overlays: [popup]
+			});
+		
+		var caractere = new ol.layer.Vector({ source: new ol.source.Vector() });
+		map.addLayer(caractere);
+
+		// Add orc sprite
+		var orc = new ol.Sprite(
+		{	name:"Orky",
+			position: map.getView().getCenter(),
+			src: "data/orc.png",
+			scale: 1.5
+		});
+		caractere.getSource().addFeature(orc);
+
+		// On click => change destination
+		map.on ("click", function(e)
+		{	orc.setDestination(e.coordinate, 10);
+			orc.setState("walk_"+orc.getQuarter());
+			popup.hide();
+		});
+
+		// Do something when arrived at destination
+		var sentences = ["Hello!","Grrwn...","Do you know what!", "I'm so happy","It's me!","Hugh!"];
+		orc.on("destination", function()
+		{	orc.setState("idle");
+			// Show popup then hide
+			popup.show(orc.getCoordinate(), sentences[(Math.random()*sentences.length)|0]);
+			setTimeout(function(){popup.hide()}, 1000);
+		});
+
+		// New Game
+		var game = new ol.Game({ map: map, controls:[new ol.control.FrameRate()] });
+		// Game loop
+		game.on ("render", function(e)
+		{	orc.move(e);
+		});
+		// start game!
+		game.start();
+
+	</script>
+
+</body>
+</html>
