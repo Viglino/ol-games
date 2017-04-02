@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<!----------------------------------------------------------
+ 
+	Copyright (c) 2016 Jean-Marc VIGLINO, 
+	released under CeCILL-B (french BSD like) licence: http://www.cecill.info/
+	
+------------------------------------------------------------>
+	<title>OL3-games: Sprite path</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<meta name="description" content="transform interaction for OL3" />
+	<meta name="keywords" content="ol3, vector, transform, rotate, scale, stretch" />
+
+	<link rel="stylesheet" href="style.css" />
+
+	<!-- jQuery -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<!-- FontAwesome -->
+	<link rel="stylesheet" href="https://fontawesome.io/assets/font-awesome/css/font-awesome.css" type="text/css" />
+
+	<!-- OL3 -->
+    <link rel="stylesheet" href="https://openlayers.org/en/master/css/ol.css" />
+	<script type="text/javascript" src="https://openlayers.org/en/master/build/ol.js"></script>
+
+	<!-- OL3-ext -->
+	<link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/dist/ol3-ext.css" />
+	<script type="text/javascript" src="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/dist/ol3-ext.js"></script>
+	<link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol3-ext/gh-pages/overlay/popupoverlay.anim.css" />
+
+	<!-- game -->
+	<script type="text/javascript" src="../game/ol.game.js"></script>
+	<script type="text/javascript" src="../style/ol.style.sprite.js"></script>
+	<script type="text/javascript" src="../feature/ol.sprite.js"></script>
+	<script type="text/javascript" src="../control/frameratecontrol.js"></script>
+
+	<style>
+		#map
+		{	width:800px;
+			height:600px;
+			float: left;
+		}
+		.ol-control.ol-framerate
+		{	top:0.5em;
+			right: 0.5em;
+		}
+		textarea
+		{	vertical-align: top;
+		}
+	</style>
+
+</head>
+<body >
+	<a href="https://github.com/Viglino/ol3-ext"><img style="position: absolute; top: 0; right: 0; border: 0; z-index:1" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+	<a href="../index.html">
+		<h1>OL3-ext: Sprite path</h1>
+	</a>
+	<div class="info">
+		This example show how a sprite can follow a path.
+		<br/>
+		You can use the <i>ol.Sprite.setPath()</i> to set the path to follow. Then just call <i>ol.Sprite.move()</i>
+		in the game loop to have the sprite moving along the path.
+		Use <i>ol.Sprite.stop()</i> and <i>ol.Sprite.restart()</i> to control the movement.
+		<br />
+		Listen to :
+		<ul>
+			<li>
+				<i>change:direction</i> event to know when the sprite take a new segment 
+			</li>
+			<li>
+				<i>destination</i> event to know when the sprite reach the final destination.
+			</li>
+		</ul> 
+	</div>
+
+	<!-- Map div -->
+	<div id="map"></div>
+
+	<div class="options" >
+		<h2>Options:</h2>
+		<ul>
+			<li>
+				<button onclick="go()">Follow the path...</button>
+			</li>
+			<li>
+				<button onclick="plane.stop()">Stop!</button>
+				<button onclick="if (plane.destination) plane.restart()">Restart!</button>
+			</li>
+			<li><hr /></li>
+			<li>
+				<input id="loop" type="checkbox" checked="checked" /><label for="loop"> loop</label>
+			</li>
+			<li>
+				Speed: <input id="speed" type="number" min="3" max="100" value="10" onchange="plane.setSpeed(Math.max(parseInt(this.value),1));" />
+			</li>
+		</ul>
+	</div>
+	
+
+	<script type="text/javascript">
+		// Layers
+		var layer = new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'watercolor' }) });
+
+		// The map
+		var map = new ol.Map
+			({	target: 'map',
+				loadTilesWhileAnimating: true,
+				loadTilesWhileInteracting: true,
+				view: new ol.View
+				({	zoom: 11,
+					center: [260064, 6250762]
+				}),
+				controls: [ new ol.control.Attribution() ],
+				interactions: [],
+				layers: [layer]
+			});
+		
+		var sprites = new ol.layer.Vector({ source: new ol.source.Vector() });
+		map.addLayer(sprites);
+
+		// New Path (cspline)
+		var path = new ol.geom.LineString([[250000, 6250762], [270000, 6265000], [280000, 6240000], [250000, 6250762]]);
+		var f = new ol.Feature(path.cspline({ tension: 1, pointsPerSeg: 50 }));
+		sprites.getSource().addFeature(f);
+		
+		// Plane
+		var plane = new ol.Sprite(
+		{	position: [250000, 6250762],
+			src: "data/plane.png",
+			size: 175,
+			scale: 0.4,
+			frameRate: 10,
+			// Define the states for the plane
+			states: 
+			{	idle: { line:0, length:3 } 
+			}
+		}); 
+		sprites.getSource().addFeature(plane);
+		
+		// When direction change, set the angle of the sprite
+		plane.on("change:direction", function(e)
+		{	plane.setRotation(e.angle);
+		});
+		
+		// Follow the path
+		var t;
+		function go()
+		{	t = new Date();
+			var speed = Math.max(parseInt($("#speed").val()),1);
+			$("#speed").val(speed);
+			if (!plane.moving()) plane.setPath(f.getGeometry().getCoordinates(), speed);
+		}
+		// Calculate trip duration
+		plane.on("destination", function(e)
+		{	console.log("Time: "+((new Date() - t)/1000));
+			if ($("#loop").prop("checked")) go();
+		});
+
+		// New Game
+		var game = new ol.Game({ map: map, controls:[new ol.control.FrameRate()] });
+
+		// Game loop
+		game.on ("render", function(e)
+		{	plane.move(e);
+		});
+		// start game!
+		game.start();
+
+	</script>
+
+</body>
+</html>
