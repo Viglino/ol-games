@@ -2,7 +2,7 @@
 
 One hand, many games use maps as playground and some are based on a map. On the other hand, [OpenLayers 3](https://github.com/openlayers/openlayers) is a high-performance, feature-packed library for creating interactive maps on the web.
 
-This project tends to test and add game mechanisms within OL3 (Openlayers 3).
+This project aims to test and add game mechanisms within OL3 (Openlayers 3).
 > It is by no means a complete game or complete game engine but you should find some stuff to devleopp game on a map with OL3.
 
 [View live examples online!](https://viglino.github.io/ol3-games/index.html)
