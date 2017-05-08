@@ -6,13 +6,13 @@
 	
 */
 /**
-* Class to handle collisions
+* Class to handle collisions beetween sprites
 *
 * @constructor ol.Collision
 * @extends {ol.Object}
 * @param {olx.CollisionOptions=} options
-*	- resample {Integer} 
-*	- sprites {Arrary<ol.Sprite>} an array of sprites to test collision on each other
+*	- resample {Integer} resample ratio, default 1
+*	- sprites {Arrary<ol.Sprite>} an array of sprites as a source to test collision. If no target it will test collision on each other.
 *	- target {Arrary<ol.Sprite>} an array of sprites to test collision on
 * @todo 
 */
@@ -21,10 +21,11 @@ ol.Collision = function (options)
 	ol.Object.call(this);
 
 	this.game = options.game;
-
 	this.resample = options.resample || 1;
+	
 	// Collision canvas
 	this.canvas = document.createElement('canvas');
+	this.canvas.width = this.canvas.height = 32;
 
 	// 
 	this.sprites = options.sprites || [];
@@ -40,7 +41,7 @@ ol.Collision.prototype.getImage = function ()
 
 /** Test if a sprite goes out of the current extent
 * @param {ol.Sprite} s1 the sprite to test
-* @return {N|S|E|W|false} the direction or false if 
+* @return {N|S|E|W|false} the direction it goes out or false if inside the current extent
 */
 ol.Collision.prototype.overflow = function (s1)
 {	if (!this.game.frameState) return false;
@@ -88,7 +89,7 @@ ol.Collision.prototype.collide = function (s1, s2)
 	var e1 = s1.getBBox(this.game.frameState.viewState.resolution);
 	var e2 = s2.getBBox(this.game.frameState.viewState.resolution);
 	if (!ol.extent.intersects(e1,e2)) return false;
-	
+
 	// Transform pixel to 
 	p1 = this.getPixel(e1);//[e1[0],e1[1]]);
 	p2 = this.getPixel(e2);//[e2[0],e2[1]]);
