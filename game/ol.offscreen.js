@@ -24,33 +24,32 @@ ol.Offscreen = function(options)
 	odiv.style.position = "absolute";
 	odiv.style.opacity = 0;
 	odiv.style.visibility = "hidden";
-	odiv.style.top = odiv.style.left = "-10000px";
+	odiv.style.top = odiv.style.left = "-100000px";
 	odiv.style.width = map.getSize()[0]+"px";
 	odiv.style.height = map.getSize()[1]+"px";
 	odiv.className = "ol-games-offscreen";
 	
 	// Offscreen map
+	var pratio = options.pixelRatio || 1;
 	this.offmap = new ol.Map (
 		{	target: odiv,
 			// loadTilesWhileAnimating: true,
+			pixelRatio: pratio,
 			controls: [],
 			interactions: [],
 			layers: options.layers
 		});
-	map.on("change:size", function(e){ 
-		odiv.style.width = map.getSize()[0]+"px";
-		odiv.style.height = map.getSize()[1]+"px";
-	});
+	this.offmap.set("pixelRatio", pratio);
 	this.setMap(options.map);
 
 	// Resample to test collision
 	this.resample = options.resample || 1;
 
 	// Canvas
-	this.image = odiv.children[0].children[0];
+	this.image = this.offmap.getViewport().children[0];
 	
 	this.canvas = document.createElement('canvas');
-
+	this.canvas.width = this.canvas.height = 32;
 };
 ol.inherits (ol.Offscreen, ol.Object);
 
@@ -107,8 +106,8 @@ ol.Offscreen.prototype.getValue = function(coord)
 * @return {ol.coordinate | false} false if no collision detected, coordinate of the hit point
 */
 ol.Offscreen.prototype.collide = function(s1)
-{	var ratio = map.get('pixelRatio') || window.devicePixelRatio;
-
+{	var ratio = this.offmap.get('pixelRatio');
+	
 	// Intersect extent
 	var e1 = s1.getBBox(this.map.getView().getResolution());
 	var e2 = this.map.getView().calculateExtent(this.map.getSize());
@@ -118,11 +117,14 @@ ol.Offscreen.prototype.collide = function(s1)
 	var p1 = this.map.getPixelFromCoordinate(e1);
 	var p2 = this.map.getPixelFromCoordinate(e2);
 
+	if (!p1) return false;
+
 	// Compose image in a collision canvas
 	var fac = this.resample;
 	var s = Math.trunc(s1.getImage().size * s1.getImage().getScale() /fac);
+	var sf = s*fac*ratio;
 	var c = this.canvas;
-	c.width = c.height = s;
+	if (c.width!=s) c.width = c.height = s;
 	var ctx = c.getContext("2d");
 	ctx.save();
 		ctx.globalCompositeOperation="copy";
@@ -131,9 +133,9 @@ ol.Offscreen.prototype.collide = function(s1)
 		// Blit sprite 1
 		ctx.globalCompositeOperation="destination-out";
 		ctx.drawImage (s1.getImage().getImage(), 0, 0, s1.getImage().size, s1.getImage().size, 0, 0,s,s);
-		// Blit sprite 2
+		// Blit map
 		ctx.globalCompositeOperation="source-out";
-		ctx.drawImage (this.getImage(), p1[0]*ratio, (p1[1] - s*fac)*ratio, s*fac*ratio,s*fac*ratio, 0, 0,s,s);
+		ctx.drawImage (this.getImage(), p1[0]*ratio, p1[1]*ratio - sf, sf,sf, 0, 0,s,s);
 	ctx.restore();
 
 	var imgdata = ctx.getImageData(0,0,s,s);
