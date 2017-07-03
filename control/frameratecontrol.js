@@ -63,7 +63,7 @@ ol.control.FrameRate.prototype.update_ = function (e)
 	this.time = e.frameState.time;
 
 	// Move image left
-	this.ctx.drawImage(this.canvas_, 1, 15, 99,45, 0,15,99,45 );
+	this.ctx.drawImage(this.canvas_, 1, 15, 99,this.canvas_.height, 0,15,99,this.canvas_.height );
 
 	// Draw text
 	var fps = Math.round(500/dt);
