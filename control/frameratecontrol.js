@@ -12,7 +12,6 @@
  */
 ol.control.FrameRate = function(opt_options) 
 {	var options = opt_options || {};
-	this.info = options.info || ol.control.Profil.prototype.info;
 	var self = this;
 	
 	var element = $("<div>").addClass(options.className || "ol-framerate");
