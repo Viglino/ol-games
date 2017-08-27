@@ -1,0 +1,40 @@
+{
+  "name": "ol3-games",
+  "version": "0.0.1",
+  "description": "Game stuff for OL3, powered by HTML5, canvas, javascript and Openlayers 3.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Viglino/ol3-ext.git"
+  },
+  "keywords": [
+    "ol3",
+    "openlayers",
+    "gamer",
+    "gameloop",
+    "animation",
+    "sprite",
+    "media",
+    "audio"
+  ],
+  "author": "Jean-Marc Viglino (https://github.com/Viglino)",
+  "license": "CECILL-B",
+  "bugs": {
+    "url": "https://github.com/Viglino/ol3-games/issues"
+  },
+  "homepage": "https://github.com/Viglino/ol3-games",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-cssnext": "^1.0.1",
+    "gulp-header": "^1.8.8",
+    "gulp-minify": "0.0.14",
+    "minimist": "^1.2.0"
+  }
+}
