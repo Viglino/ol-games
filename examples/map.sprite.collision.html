@@ -139,9 +139,17 @@
 		var offmap = new ol.Offscreen({ map:map, layers: [labels], pixelRatio:1, resample:1 });
 		$(offmap.canvas).appendTo("#clayer");
 
-		var character = new ol.layer.Vector({ source: new ol.source.Vector() });
+		var character = new ol.layer.Vector({ 
+			source: new ol.source.Vector(),
+			updateWhileAnimating: true,
+			updateWhileInteracting: true
+		});
 		map.addLayer(character);
-		var vector = new ol.layer.Vector({ source: new ol.source.Vector() });
+		var vector = new ol.layer.Vector({ 
+			source: new ol.source.Vector(),
+			updateWhileAnimating: true,
+			updateWhileInteracting: true
+		});
 		map.addLayer(vector);
 
 		var orc = new ol.Sprite(

@@ -105,7 +105,11 @@
 				overlays: [popup]
 			});
 		
-		var caractere = new ol.layer.Vector({ source: new ol.source.Vector() });
+		var caractere = new ol.layer.Vector({ 
+			source: new ol.source.Vector(),
+			updateWhileAnimating: true,
+			updateWhileInteracting: true
+		});
 		map.addLayer(caractere);
 
 		// Add orc sprite

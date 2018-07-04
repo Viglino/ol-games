@@ -115,7 +115,11 @@
 		// Layers
 		var layer = new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'watercolor' }) });
 		// A vector layer to display sprites
-		var sprites = new ol.layer.Vector({ source: new ol.source.Vector() });
+		var sprites = new ol.layer.Vector({ 
+			source: new ol.source.Vector(),
+			updateWhileAnimating: true,
+			updateWhileInteracting: true
+		});
 		
 		// New Game
 		var game = new ol.Game(

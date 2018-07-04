@@ -116,7 +116,11 @@
 				layers: [layer]
 			});
 		
-		var sprites = new ol.layer.Vector({ source: new ol.source.Vector() });
+		var sprites = new ol.layer.Vector({ 
+			source: new ol.source.Vector(),
+			updateWhileAnimating: true,
+			updateWhileInteracting: true
+		});
 		map.addLayer(sprites);
 
 		// New Path (cspline)
