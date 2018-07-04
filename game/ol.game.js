@@ -46,13 +46,13 @@ ol.inherits (ol.Game, ol.Object);
 
 /**	Set the game map
 */
-ol.Game.prototype.setMap = function(map)
-{	if (this.map)
-	{	this.map.un("postcompose", this.anim_, this);
-	}
+ol.Game.prototype.setMap = function(map) {
+	if (this._listener) ol_Observable.unByKey(this._listener);
+	this._listener = null;
+
 	this.map = map;
-	if (this.map)
-	{	this.map.on ("postcompose", this.anim_, this);
+	if (this.map) {
+		this._listener = this.map.on ("postcompose", this.anim_.bind(this));
 	}
 };
 

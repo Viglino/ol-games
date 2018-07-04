@@ -19,9 +19,9 @@ ol.Graph.Vector = function (options)
 	ol.Graph.call (this, options);
 
 	this.edges = options.source || new ol.source.Vector({ useSpatialIndex: true });
-	this.edges.on('changefeature', this.changeEdge, this);
-	this.edges.on('addfeature', this.addEdge, this);
-	this.edges.on('removefeature', this.removeEdge, this);
+	this.edges.on('changefeature', this.changeEdge.bind(this));
+	this.edges.on('addfeature', this.addEdge.bind(this));
+	this.edges.on('removefeature', this.removeEdge.bind(this));
 }
 ol.inherits (ol.Graph.Vector, ol.Graph);
 

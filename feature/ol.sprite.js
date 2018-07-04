@@ -75,7 +75,7 @@ ol.Sprite.prototype.getCoordinate = function ()
 */
 ol.Sprite.prototype.setGeometry = function (g)
 {	this.coord = g;
-	ol.Feature.call (this, g);
+	ol.Feature.prototype.setGeometry.call (this, g);
 }
 
 /** Get the sprite style

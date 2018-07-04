@@ -16,13 +16,16 @@
 
 	<!-- jQuery -->
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<!-- FontAwesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <!-- OL3 -->
-	<link rel="stylesheet" href="https://openlayers.org/en/latest/css/ol.css" />
+	<!-- OpenLayers -->
+    <link rel="stylesheet" href="https://openlayers.org/en/latest/css/ol.css" />
 	<script type="text/javascript" src="https://openlayers.org/en/latest/build/ol.js"></script>
-	
-	<!-- OL3-ext -->
-	<script type="text/javascript" src="https://rawgit.com/Viglino/ol-ext/gh-pages/dist/ol-ext.js"></script>
+
+	<!-- ol-ext -->
+	<link rel="stylesheet" href="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.css" />
+	<script type="text/javascript" src="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.js"></script>
 
 	<!-- game -->
 	<script type="text/javascript" src="../featureanimation/explodeanimation.js"></script>
@@ -74,7 +77,7 @@
     		source: new ol.source.XYZ(
 			{	url: 'https://{a-d}.tiles.mapbox.com/v3/mapbox.natural-earth-hypso-bathy/{z}/{x}/{y}.png',
 				crossOrigin: "Anonymous",
-				attributions: [new ol.Attribution({ html: '&copy; <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> ' })] 
+				attributions: [ '&copy; <a href="https://www.mapbox.com/map-feedback/">Mapbox</a>' ] 
     		})
 		});
 

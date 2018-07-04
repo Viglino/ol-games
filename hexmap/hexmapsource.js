@@ -21,7 +21,7 @@ ol.source.HexMap = function(options)
 	this.context = this.canvas.getContext('2d');
 	
 	this.grid = options.hexGrid;
-	this.grid.on('change', this.changed, this);
+	this.grid.on('change', this.changed.bind(this));
 
 	ol.source.ImageCanvas.call (this, { canvasFunction: this.drawHex });	
 };

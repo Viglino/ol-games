@@ -142,12 +142,12 @@ var Game = function()
 		this.animate(e);
 		// tell OpenLayers to continue the postcompose animation
 		this.map.render();
-	}, this);
+	}.bind(this));
 
 	// Handle click
 	this.map.on('click', function(e)
 	{	this.pacman.nextMove = e.coordinate;
-	}, this);
+	}.bind(this));
 
 	//
 	//this.map.getView().setCenter([350803.665399343, 6171945.81680688]);

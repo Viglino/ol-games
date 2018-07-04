@@ -56,15 +56,17 @@ ol.inherits (ol.Offscreen, ol.Object);
 /**	Set the game map
 */
 ol.Offscreen.prototype.setMap = function(map)
-{	if (this.map)
-	{	this.map.un("change:size", this.changeSize_, this);
+{	if (this.map) {
 		this.map.getViewport().removeChild(this.element);
 		this.offmap.setView (null);
 	}
+	if (this._listener) ol_Observable.unByKey(this._listener);
+	this._listener = null;
+
 	this.map = map;
 	if (this.map)
 	{	this.map.getViewport().appendChild(this.element);
-		this.map.on("change:size", this.changeSize_, this);
+		this._listener = this.map.on("change:size", this.changeSize_.bind(this));
 		this.offmap.setSize (this.map.getSize());
 		this.offmap.setView (this.map.getView());
 	}

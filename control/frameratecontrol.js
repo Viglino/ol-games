@@ -46,13 +46,14 @@ ol.inherits(ol.control.FrameRate, ol.control.Control);
 /**
  * @param {ol.Map} map The map instance.
  */
-ol.control.FrameRate.prototype.setMap = function (map)
-{	if (this.getMap())
-	{	this.getMap().un("precompose", this.update_, this);
-	}
+ol.control.FrameRate.prototype.setMap = function (map) {
+	if (this._listener) ol_Observable.unByKey(this._listener);
+	this._listener = null;
+
 	ol.control.Control.prototype.setMap.call(this, map);
+
 	if (this.getMap())
-	{	this.getMap().on("precompose", this.update_, this);
+	{	this._listener = this.getMap().on("precompose", this.update_.bind(this));
 		this.time_ = (new Date()).getTime();
 	}
 
