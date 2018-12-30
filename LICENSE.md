@@ -1,8 +1,8 @@
 # LICENCE
 
-ol-ext (c) 2016-2018 - Jean-Marc Viglino, IGN-France
+ol-games (c) 2017-2019 - Jean-Marc Viglino, IGN-France
 
-[ol-ext](https://github.com/Viglino/ol-ext) is licenced under the French Opensource **BSD** compatible CeCILL-B FREE SOFTWARE LICENSE.
+[ol-games](https://github.com/Viglino/ol-games) is licenced under the French Opensource **BSD** compatible CeCILL-B FREE SOFTWARE LICENSE.
 
 Some resources (mapping services and API) used in this sofware may have a specific license.
 You must check before use.
