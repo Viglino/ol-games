@@ -1,0 +1,6 @@
+.vscode
+*.npmignore
+# ignore examples
+examples
+# ignore doc pages
+doc/doc-pages
