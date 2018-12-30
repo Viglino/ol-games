@@ -1,19 +1,23 @@
 {
-  "name": "ol3-games",
-  "version": "0.0.1",
-  "description": "Game stuff for OL3, powered by HTML5, canvas, javascript and Openlayers 3.",
+  "name": "ol-games",
+  "version": "1.0.1",
+  "description": "Game stuff for ol, powered by HTML5, canvas, javascript and Openlayers.",
   "main": "index.js",
   "directories": {
     "example": "examples"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "npm test npmtest.js",
+    "lint": "eslint --fix control/ feature/ featureanimation/ game/ graph/ media/ source/ style/ utils/ || exit 0"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Viglino/ol3-ext.git"
+    "url": "git+https://github.com/Viglino/ol-games.git"
   },
   "keywords": [
-    "ol3",
+    "ol",
     "openlayers",
+    "ol-ext",
     "gamer",
     "gameloop",
     "animation",
@@ -21,20 +25,31 @@
     "media",
     "audio"
   ],
-  "author": "Jean-Marc Viglino (https://github.com/Viglino)",
-  "license": "CECILL-B",
-  "bugs": {
-    "url": "https://github.com/Viglino/ol3-games/issues"
+  "author": {
+    "name": "Jean-Marc Viglino",
+    "url": "https://github.com/Viglino"
   },
-  "homepage": "https://github.com/Viglino/ol3-games",
+  "bugs": {
+    "url": "https://github.com/Viglino/ol-games/issues"
+  },
+  "homepage": "https://github.com/Viglino/ol-games",
   "dependencies": {
+    "ol-ext": "^3.0.3"
   },
   "devDependencies": {
+    "eslint": "^5.10.0",
     "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.0",
-    "gulp-cssnext": "^1.0.1",
-    "gulp-header": "^1.8.8",
-    "gulp-minify": "0.0.14",
-    "minimist": "^1.2.0"
-  }
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-header": "^2.0.5",
+    "gulp-minify": "^3.1.0",
+    "gulp-watch": "^5.0.1",
+    "live-server": "^1.2.0",
+    "minimist": "^1.2.0",
+    "plugin-error": "^1.0.1",
+    "through2": "^2.0.3"
+  },
+  "license": "BSD-3-Clause"
 }

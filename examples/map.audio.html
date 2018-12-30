@@ -1,102 +1,101 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<!----------------------------------------------------------
- 
-	Copyright (c) 2017 Jean-Marc VIGLINO, 
-	released under CeCILL-B (french BSD like) licence: http://www.cecill.info/
-	
------------------------------------------------------------->
-	<title>OL3-games: Sounds!</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--
+  Copyright (c) 2017 Jean-Marc VIGLINO, 
+  released under CeCILL-B (french BSD like) licence: http://www.cecill.info/
+-->
+  <title>ol-games: Sounds!</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-	<meta name="description" content="Usefull class to handle audio in il3-games" />
-	<meta name="keywords" content="ol3, game, audio, sound, media" />
+  <meta name="description" content="Usefull class to handle audio in il3-games" />
+  <meta name="keywords" content="ol, game, audio, sound, media" />
 
-	<link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css" />
 
-	<!-- jQuery -->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
-	<!-- FontAwesome -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- jQuery -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-	<!-- OpenLayers -->
-    <link rel="stylesheet" href="https://openlayers.org/en/latest/css/ol.css" />
-	<script type="text/javascript" src="https://openlayers.org/en/latest/build/ol.js"></script>
+  <!-- OpenLayers -->
+  <link rel="stylesheet" href="https://openlayers.org/en/latest/css/ol.css" />
+  <script type="text/javascript" src="https://openlayers.org/en/latest/build/ol.js"></script>
 
-	<!-- ol-ext -->
-	<link rel="stylesheet" href="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.css" />
-	<script type="text/javascript" src="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.js"></script>
+  <!-- ol-ext -->
+  <link rel="stylesheet" href="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.css" />
+  <script type="text/javascript" src="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.js"></script>
 
-	<!-- game -->
-	<script type="text/javascript" src="../media/ol.media.js"></script>
-	<script type="text/javascript" src="../media/ol.media.audio.js"></script>
+  <!-- ol-games -->
+  <link rel="stylesheet" href="../dist/ol-games.css" />
+  <script type="text/javascript" src="../dist/ol-games.js"></script>
 
-	<style>
-		#map
-		{	position: absolute;
-			top:4.5em; bottom:0;
-			left:0; right: 0;
-			margin: 0;
-		}
-		.options
-		{	position:absolute;
-			right: 1em;
-		}
-	</style>
+
+  <style>
+    #map {
+      position: absolute;
+      top:4.5em; bottom:0;
+      left:0; right: 0;
+      margin: 0;
+    }
+    .options {
+      position:absolute;
+      right: 1em;
+    }
+  </style>
 
 </head>
 <body >
-	<a href="https://github.com/Viglino/ol3-games"><img style="position: absolute; top: 0; right: 0; border: 0; z-index:1" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+  <a href="https://github.com/Viglino/ol-games" class="icss-github-corner"><i></i></a>
 
-	<a href="../">
-		<h1>OL3-games: Sounds!</h1>
-	</a>
-	<div class="info">
-	</div>
+  <a href="../">
+    <h1>ol-games: Sounds!</h1>
+  </a>
+  <div class="info">
+  </div>
 
-	<!-- Map div -->
-	<div id="map"></div>
+  <!-- Map div -->
+  <div id="map"></div>
 
-	<div class="options" >
-		<h2>Options:</h2>
-		Click or move the map to play a sound.
-	</div>
-	
+  <div class="options" >
+    <h2>Options:</h2>
+    Click or move the map to play a sound.
+  </div>
+  
 
-	<script type="text/javascript">
-		// Layers
-		var layers = [ new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'watercolor' }) }) ];
-		
+  <script type="text/javascript">
+    // Layers
+    var layers = [ new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'watercolor' }) }) ];
+    
 
-		// The map
-		var map = new ol.Map
-			({	target: 'map',
-				view: new ol.View
-				({	zoom: 11,
-					center: [260064, 6250762]
-				}),
-				controls: ol.control.defaults({ "attribution": false }),
-				layers: layers
-			});
+    // The map
+    var map = new ol.Map ({
+      target: 'map',
+      view: new ol.View ({
+        zoom: 11,
+        center: [260064, 6250762]
+      }),
+      controls: ol.control.defaults({ "attribution": false }),
+      layers: layers
+    });
 
-		// Boing on click
-		var boing = new ol.media.Audio({ source:"sound/383240.mp3" });
-		map.on('click', function(e)
-		{	boing.play(0);
-		});
+    // Boing on click
+    var boing = new ol.media.Audio({ source:"sound/383240.mp3" });
+    map.on('click', function(e) {
+      boing.play(0);
+    });
 
-		// Slide sound while panning the map
-		var slide = new ol.media.Audio({ source:"sound/51132.mp3", loop:true });
-		// map.on('movestart', function(e)
-		map.getView().on('propertychange', function(e)
-		{	slide.play();
-		});
-		map.on('moveend', function(e)
-		{	slide.stop();
-		});
+    // Slide sound while panning the map
+    var slide = new ol.media.Audio({ source:"sound/51132.mp3", loop:true });
+    // map.on('movestart', function(e)
+    map.getView().on('propertychange', function(e) {
+    	slide.play();
+    });
+    map.on('moveend', function(e) {
+      slide.stop();
+    });
 
-	</script>
+  </script>
 
 </body>
 </html>

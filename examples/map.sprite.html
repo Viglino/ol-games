@@ -1,173 +1,169 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<!----------------------------------------------------------
- 
-	Copyright (c) 2016 Jean-Marc VIGLINO, 
-	released under CeCILL-B (french BSD like) licence: http://www.cecill.info/
-	
------------------------------------------------------------->
-	<title>OL3-games: Sprites!</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--
+  Copyright (c) 2016 Jean-Marc VIGLINO, 
+  released under CeCILL-B (french BSD like) licence: http://www.cecill.info/
+-->
+  <title>ol-games: Sprites!</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-	<meta name="description" content="Sprites for ol3 games" />
-	<meta name="keywords" content="ol3, game, sprite, spritesheet" />
+  <meta name="description" content="Sprites for openlayers games" />
+  <meta name="keywords" content="ol,openlayers, game, sprite, spritesheet" />
 
-	<link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css" />
 
-	<!-- jQuery -->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
-	<!-- FontAwesome -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- jQuery -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-	<!-- OpenLayers -->
-    <link rel="stylesheet" href="https://openlayers.org/en/latest/css/ol.css" />
-	<script type="text/javascript" src="https://openlayers.org/en/latest/build/ol.js"></script>
+  <!-- OpenLayers -->
+  <link rel="stylesheet" href="https://openlayers.org/en/latest/css/ol.css" />
+  <script type="text/javascript" src="https://openlayers.org/en/latest/build/ol.js"></script>
 
-	<!-- ol-ext -->
-	<link rel="stylesheet" href="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.css" />
-	<script type="text/javascript" src="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.js"></script>
+  <!-- ol-ext -->
+  <link rel="stylesheet" href="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.css" />
+  <script type="text/javascript" src="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.js"></script>
 
-	<!-- game -->
-	<script type="text/javascript" src="../game/ol.game.js"></script>
-	<script type="text/javascript" src="../style/ol.style.sprite.js"></script>
-	<script type="text/javascript" src="../feature/ol.sprite.js"></script>
-	<script type="text/javascript" src="../control/frameratecontrol.js"></script>
+  <!-- ol-games -->
+  <link rel="stylesheet" href="../dist/ol-games.css" />
+  <script type="text/javascript" src="../dist/ol-games.js"></script>
 
-	<style>
-		#map
-		{	width:800px;
-			height:600px;
-			float: left;
-		}
-		.ol-control.ol-framerate
-		{	top:0.5em;
-			right: 0.5em;
-		}
-		label { width:4.2em; display: inline-block; }
-		button { background:#369; color:#fff; padding:0.5em; border:0; margin:3px; min-width:2.5em; }
-	</style>
+  <style>
+    #map {
+      width:800px;
+      height:600px;
+      float: left;
+    }
+    .ol-control.ol-framerate {
+      left: auto;
+      right: 0.5em;
+    }
+    label { width:4.2em; display: inline-block; }
+    button { background:#369; color:#fff; padding:0.5em; border:0; margin:3px; min-width:2.5em; }
+  </style>
 
 </head>
 <body >
-	<a href="https://github.com/Viglino/ol3-games"><img style="position: absolute; top: 0; right: 0; border: 0; z-index:1" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+  <a href="https://github.com/Viglino/ol-games" class="icss-github-corner"><i></i></a>
 
-	<a href="../index.html">
-		<h1>OL3-ext: Sprites!</h1>
-	</a>
-	<div class="info">
-		<a href="https://github.com/Viglino/ol3-games/blob/master/feature/ol.sprite.js">ol.Sprite</a> is a <i>ol.Feature</i> with an <i>ol.style.Sprite</i>.
-		<br/>
-		<a href="https://github.com/Viglino/ol3-games/blob/master/style/ol.style.sprite.js">ol.style.Sprite</a> is similar to 
-		<a href="https://openlayers.org/en/latest/apidoc/ol.style.Icon.html">ol.style.Icon</a> with a spritesheet template used to animate features in the game loop.
-		<br/>
-		Sprites can be scaled and rotated as icons do. You can listen to "state" event to know when a state begin or finsh.
-		<p>
-			Robin icon is part of the <a href="https://github.com/jrconway3/Universal-LPC-spritesheet">Universal-LPC-spritesheet</a> project!;
-			<br/>
-			The plane is part of the <a href="http://unluckystudio.com/free-game-artassets-for-games-12-top-down-planes-sprites-pack/">
-				Plane sprite pack form Unlucky studio.
-			</a>
-		</p>
-	</div>
+  <a href="../index.html">
+    <h1>ol-games: Sprites!</h1>
+  </a>
+  <div class="info">
+    <a href="https://github.com/Viglino/ol-games/blob/master/feature/ol.sprite.js">ol.Sprite</a> is a <i>ol.Feature</i> with an <i>ol.style.Sprite</i>.
+    <br/>
+    <a href="https://github.com/Viglino/ol-games/blob/master/style/ol.style.sprite.js">ol.style.Sprite</a> is similar to 
+    <a href="https://openlayers.org/en/latest/apidoc/ol.style.Icon.html">ol.style.Icon</a> with a spritesheet template used to animate features in the game loop.
+    <br/>
+    Sprites can be scaled and rotated as icons do. You can listen to "state" event to know when a state begin or finsh.
+    <p>
+      Robin icon is part of the <a href="https://github.com/jrconway3/Universal-LPC-spritesheet">Universal-LPC-spritesheet</a> project!;
+      <br/>
+      The plane is part of the <a href="http://unluckystudio.com/free-game-artassets-for-games-12-top-down-planes-sprites-pack/">
+        Plane sprite pack form Unlucky studio.
+      </a>
+    </p>
+  </div>
 
-	<!-- Map div -->
-	<div id="map"></div>
+  <!-- Map div -->
+  <div id="map"></div>
 
-	<div class="options" >
-		<h2>Robin</h2>
-		<label>State:</label>
-		<button onclick="robin.setState('idle')">idle</button>
-		<button onclick="robin.setState('hurt')">Hurt</button>
-		<br /><label>Encant:</label>
-		<button onclick="robin.setState('encant_S')">S</button>
-		<button onclick="robin.setState('encant_N')">N</button>
-		<button onclick="robin.setState('encant_E')">E</button>
-		<button onclick="robin.setState('encant_W')">W</button>
-		<br /><label>Thrust:</label>
-		<button onclick="robin.setState('thrust_S')">S</button>
-		<button onclick="robin.setState('thrust_N')">N</button>
-		<button onclick="robin.setState('thrust_E')">E</button>
-		<button onclick="robin.setState('thrust_W')">W</button>
-		<br /><label>Walk:</label>
-		<button onclick="robin.setState('walk_S')">S</button>
-		<button onclick="robin.setState('walk_N')">N</button>
-		<button onclick="robin.setState('walk_E')">E</button>
-		<button onclick="robin.setState('walk_W')">W</button>
-		<br /><label>Slash:</label>
-		<button onclick="robin.setState('slash_S')">S</button>
-		<button onclick="robin.setState('slash_N')">N</button>
-		<button onclick="robin.setState('slash_E')">E</button>
-		<button onclick="robin.setState('slash_W')">W</button>
-		<br /><label>Shoot:</label>
-		<button onclick="robin.setState('shoot_S')">S</button>
-		<button onclick="robin.setState('shoot_N')">N</button>
-		<button onclick="robin.setState('shoot_E')">E</button>
-		<button onclick="robin.setState('shoot_W')">W</button>
-		
-		<h2>Plane</h2>
-		Rotation: <input type="number" style="width:3em" value="0" onchange="plane.setRotation(this.value*Math.PI/180);" />
-		<br/>
-		Scale: <input type="number" style="width:3em" min="0.1" value="0.5" step="0.1" onchange="plane.setScale(this.value);" />
-	</div>
+  <div class="options" >
+    <h2>Robin</h2>
+    <label>State:</label>
+    <button onclick="robin.setState('idle')">idle</button>
+    <button onclick="robin.setState('hurt')">Hurt</button>
+    <br /><label>Encant:</label>
+    <button onclick="robin.setState('encant_S')">S</button>
+    <button onclick="robin.setState('encant_N')">N</button>
+    <button onclick="robin.setState('encant_E')">E</button>
+    <button onclick="robin.setState('encant_W')">W</button>
+    <br /><label>Thrust:</label>
+    <button onclick="robin.setState('thrust_S')">S</button>
+    <button onclick="robin.setState('thrust_N')">N</button>
+    <button onclick="robin.setState('thrust_E')">E</button>
+    <button onclick="robin.setState('thrust_W')">W</button>
+    <br /><label>Walk:</label>
+    <button onclick="robin.setState('walk_S')">S</button>
+    <button onclick="robin.setState('walk_N')">N</button>
+    <button onclick="robin.setState('walk_E')">E</button>
+    <button onclick="robin.setState('walk_W')">W</button>
+    <br /><label>Slash:</label>
+    <button onclick="robin.setState('slash_S')">S</button>
+    <button onclick="robin.setState('slash_N')">N</button>
+    <button onclick="robin.setState('slash_E')">E</button>
+    <button onclick="robin.setState('slash_W')">W</button>
+    <br /><label>Shoot:</label>
+    <button onclick="robin.setState('shoot_S')">S</button>
+    <button onclick="robin.setState('shoot_N')">N</button>
+    <button onclick="robin.setState('shoot_E')">E</button>
+    <button onclick="robin.setState('shoot_W')">W</button>
+    
+    <h2>Plane</h2>
+    Rotation: <input type="number" style="width:3em" value="0" onchange="plane.setRotation(this.value*Math.PI/180);" />
+    <br/>
+    Scale: <input type="number" style="width:3em" min="0.1" value="0.5" step="0.1" onchange="plane.setScale(this.value);" />
+  </div>
 
-	<script type="text/javascript">
-		// Layers
-		var layer = new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'watercolor' }) });
-		// A vector layer to display sprites
-		var sprites = new ol.layer.Vector({ 
-			source: new ol.source.Vector(),
-			updateWhileAnimating: true,
-			updateWhileInteracting: true
-		});
-		
-		// New Game
-		var game = new ol.Game(
-			{	target: 'map',
-				zoom: 16,
-				center: [260064, 6250762],
-				layers: [layer, sprites],
-				controls: [new ol.control.FrameRate()]
-			});
+  <script type="text/javascript">
+    // Layers
+    var layer = new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'watercolor' }) });
+    // A vector layer to display sprites
+    var sprites = new ol.layer.Vector({ 
+      source: new ol.source.Vector(),
+      updateWhileAnimating: true,
+      updateWhileInteracting: true
+    });
+    
+    // New Game
+    var game = new ol.Game({
+      target: 'map',
+      zoom: 16,
+      center: [260064, 6250762],
+      layers: [layer, sprites],
+      controls: [new ol.control.FrameRate()]
+    });
 
-		// Define Robin sprite
-		var robin = new ol.Sprite(
-		{	name: "Robin",
-			position: [259900, 6250762],
-			src: "data/robin.png",
-			scale: 1.5
-		}); 
-		sprites.getSource().addFeature(robin);
+    // Define Robin sprite
+    var robin = new ol.Sprite({
+      name: "Robin",
+      position: [259900, 6250762],
+      src: "data/robin.png",
+      scale: 1.5
+    }); 
+    sprites.getSource().addFeature(robin);
 
-		// Define the plane
-		var plane = new ol.Sprite(
-		{	position: [260200, 6250762],
-			src: "data/plane.png",
-			size: 175,
-			scale: 0.5,
-			frameRate: 10,
-			// Define the states for the plane
-			states: 
-			{	idle: { line:0, length:3 } 
-			}
-		}); 
-		sprites.getSource().addFeature(plane);
+    // Define the plane
+    var plane = new ol.Sprite({
+      position: [260200, 6250762],
+      src: "data/plane.png",
+      size: 175,
+      scale: 0.5,
+      frameRate: 10,
+      // Define the states for the plane
+      states: {
+        idle: { line:0, length:3 } 
+      }
+    }); 
+    sprites.getSource().addFeature(plane);
 
-		// Continue animation when Robin is walking or stop if an other state finish.
-		var animate=true;
-		robin.on("state", function(e)
-		{	animate = !e.end || (e.end && /walk/.test(e.state));
-		});
+    // Continue animation when Robin is walking or stop if an other state finish.
+    var animate=true;
+    robin.on("state", function(e) {
+      animate = !e.end || (e.end && /walk/.test(e.state));
+    });
 
-		// Game loop
-		game.on ("render", function(e)
-		{	if (animate) robin.update(e);
-			plane.update(e);
-		});
-		// start game!
-		game.start();
+    // Game loop
+    game.on ("render", function(e) {
+      if (animate) robin.update(e);
+      plane.update(e);
+    });
+    // start game!
+    game.start();
 
-	</script>
+  </script>
 
 </body>
 </html>
