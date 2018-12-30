@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<!--
+  Copyright (c) 2016 Jean-Marc VIGLINO, 
+  released under CeCILL-B (french BSD like) licence: http://www.cecill.info/
+-->
+<html>
+<head>
+  <title>ol-games: PacMap</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+  <meta name="description" content="Pacman on a map" />
+  <meta name="keywords" content="ol, game, pacman, graph" />
+
+  <link rel="stylesheet" href="../../style.css" />
+
+  <!-- jQuery -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- OpenLayers -->
+    <link rel="stylesheet" href="https://openlayers.org/en/latest/css/ol.css" />
+  <script type="text/javascript" src="https://openlayers.org/en/latest/build/ol.js"></script>
+
+  <!-- ol-ext -->
+  <link rel="stylesheet" href="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.css" />
+  <script type="text/javascript" src="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.js"></script>
+
+  <!-- ol-games -->
+  <link rel="stylesheet" href="../../../dist/ol-games.css" />
+  <script type="text/javascript" src="../../../dist/ol-games.js"></script>
+
+  <style>
+    #map {
+      width:800px;
+      height:600px;
+    }
+    .options {
+      position:absolute;
+      right: 1em;
+    }
+    
+    .ol-framerate {
+      top: 0.5em;
+      left: 3.5em;
+    }
+    .framerate {
+      color: green;
+      font-size: 2em;
+      display: inline-block;
+      width: 2em;
+      text-align: right;
+    }
+  </style>
+
+</head>
+<body >
+  <a href="https://github.com/Viglino/ol-games" class="icss-github-corner"><i></i></a>
+
+  <a href="../../../index.html">
+    <h1>Pac-Map</h1>
+  </a>
+  <div class="info">
+  </div>
+
+  <!-- Map div -->
+  <div id="map"></div>
+
+  <div class="options" >
+    <button onclick="game.play();"><i class="fa fa-play"></i></button>
+    <button onclick="game.pause();"><i class="fa fa-pause"></i></button>
+    <button onclick="game.pacman.goBack()"><i class="fa fa-step-backward"></i></button>
+    <button onclick="game.enableMap();"><i class="fa fa-hand-paper-o"></i></button>
+    <button onclick="game.generate();"><i class="fa fa-braille"></i></button>
+    <div><span class="framerate"></span> fps</div>
+  </div>
+  
+  <script type="text/javascript" src="pacmap.js"></script>
+
+</body>
+</html>
