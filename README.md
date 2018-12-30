@@ -1,20 +1,20 @@
-# <img src="https://github.com/Viglino/OL3-games/raw/master/img/ol3-games.png" height="64px" align="left" /> ol3-games
+# <img src="https://raw.githubusercontent.com/Viglino/ol-games/master/img/ol3-games.png" height="64px" align="left" /> ol-games
 
-One hand, many games use maps as playground and some are based on a map. On the other hand, [OpenLayers 3](https://github.com/openlayers/openlayers) is a high-performance, feature-packed library for creating interactive maps on the web.
+One hand, many games use maps as playground and some are based on a map. On the other hand, [OpenLayers](https://github.com/openlayers/openlayers) is a high-performance, feature-packed library for creating interactive maps on the web.
 
-This project aims to test and add game mechanisms within OL3 (Openlayers 3).
+This project aims to test and add game mechanisms within Openlayers (ol).
 > It is by no means a complete game or complete game engine but you should find some stuff to devleopp game on a map with OL3.
 
-[View live examples online!](https://viglino.github.io/ol3-games/index.html)
+[View live examples online!](https://viglino.github.io/ol-games/index.html)
 
 ## Dependencies
-This project uses [OL3](https://github.com/openlayers/openlayers), [OL3-ext]() and [jQuery](https://github.com/jquery/jquery).
+This project uses [Openlayers](https://github.com/openlayers/openlayers) and [ol-ext](https://github.com/Viglino/ol-ext).
 Hexagnol grid concepts developped in the [Red Blob Games](http://www.redblobgames.com/grids/hexagons/).
 
 Materials mainly comes from the [FreeSound project](https://www.freesound.org/) and [OpenGameArt](http://opengameart.org/).
 
 
-## OL3
+## Openlayers
 
 [OpenLayers](https://openlayers.org/) makes it easy to put a dynamic map in any web page. 
 * It can display map tiles, vector data and markers loaded from any source. 
@@ -28,7 +28,7 @@ Just look at the [OL3 example page](https://openlayers.org/en/latest/examples/?q
 * Exposes an API for drawing geometries and features to the output canvas
 
 
-## OL3-games
+## ol-games
 
 Here are some of the features I'm working on in this repository.
 
@@ -57,11 +57,13 @@ This is just a simple implementation of the HTML [Audio](https://www.w3schools.c
 
 ## Licence
 
-OL3-games is licenced under the French Opensource BSD compatible CeCILL-B FREE SOFTWARE LICENSE.  
- (c) 2017 - Jean-Marc Viglino
+ol-games is licenced under the French Opensource BSD compatible CeCILL-B FREE SOFTWARE LICENSE.  
+ (c) 2017-2019 - Jean-Marc Viglino
 
-Some resources and materials (mapping services and API, sprites or sounds) used in this sofware may have a specific license.  
+Some resources (mapping services and API) used in this sofware may have a specific license.  
 You must check before use.
 
-> Full text license in English: (http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt)  
-> Full text license in French: (http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.txt)
+> [Full text license in English](http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt)  
+> [Full text license in French](http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.txt)
+
+For convenience ol-games is also published under the BSD-3-Clause Licence.
