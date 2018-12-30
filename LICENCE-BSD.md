@@ -1,6 +1,6 @@
-### ol-ext - BSD-3-Clause Licence
+### ol-games - BSD-3-Clause Licence
 
-Copyright (c) 2016-2018 - Jean-Marc Viglino, IGN-France
+Copyright (c) 2017-2019 - Jean-Marc Viglino, IGN-France
 
 
 
