@@ -4,7 +4,7 @@
 */
 /*eslint no-constant-condition: ["error", { "checkLoops": false }]*/
 
-import {inherits as ol_inherits} from 'ol'
+import ol_ext_inherits from '../util/ext'
 import ol_Feature from 'ol/Feature'
 import ol_geom_Point from 'ol/geom/Point'
 import ol_style_Style from 'ol/style/Style'
@@ -59,7 +59,7 @@ var ol_Sprite = function (options) {
   this.speed = 0;
   this.dir = [0,0];
 };
-ol_inherits (ol_Sprite, ol_Feature);
+ol_ext_inherits (ol_Sprite, ol_Feature);
 
 /** Set the name of the sprite (to be display on top of his head)
 * @param {string} name

@@ -5,7 +5,7 @@
   @example http://www.hexographer.com/
   
 */
-import {inherits as ol_inherits} from 'ol'
+import ol_ext_inherits from '../util/ext'
 import ol_Object from 'ol/Object'
 import ol_Observable from 'ol/Observable'
 import ol_Map from 'ol/Map'
@@ -49,13 +49,10 @@ var ol_Offscreen = function(options) {
   // Resample to test collision
   this.resample = options.resample || 1;
 
-  // Canvas
-  this.image = this.offmap.getViewport().children[0];
-  
   this.canvas = document.createElement('canvas');
   this.canvas.width = this.canvas.height = 32;
 };
-ol_inherits (ol_Offscreen, ol_Object);
+ol_ext_inherits (ol_Offscreen, ol_Object);
 
 /**	Set the game map
 */
@@ -79,7 +76,9 @@ ol_Offscreen.prototype.setMap = function(map) {
 /** Get offscreen image
 */
 ol_Offscreen.prototype.getImage = function() {
-  return this.image;
+  var canvas = this.offmap.getViewport().querySelector('canvas');
+  if  (!canvas) canvas = document.createElement('CANVAS');
+  return canvas;
 };
 
 /** Change size
@@ -113,7 +112,7 @@ ol_Offscreen.prototype.getValue = function(coord) {
 */
 ol_Offscreen.prototype.collide = function(s1) {
   var ratio = this.offmap.get('pixelRatio');
-  
+
   // Intersect extent
   var e1 = s1.getBBox(this.map.getView().getResolution());
   var e2 = this.map.getView().calculateExtent(this.map.getSize());

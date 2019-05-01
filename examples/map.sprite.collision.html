@@ -5,7 +5,7 @@
   Copyright (c) 2016 Jean-Marc VIGLINO, 
   released under CeCILL-B (french BSD like) licence: http://www.cecill.info/
 -->
-  <title>ol-games: Game</title>
+  <title>ol-games: Sprite collision</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
   <meta name="description" content="Sprite collision for openlayers games" />
@@ -20,7 +20,7 @@
 
   <!-- OpenLayers -->
   <link rel="stylesheet" href="https://openlayers.org/en/latest/css/ol.css" />
-  <script type="text/javascript" src="https://openlayers.org/en/latest/build/ol.js"></script>
+  <script type="text/javascript" src="https://openlayers.org/en/master/build/ol.js"></script>
 
   <!-- ol-ext -->
   <link rel="stylesheet" href="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.css" />
@@ -74,7 +74,7 @@
   <a href="https://github.com/Viglino/ol-games" class="icss-github-corner"><i></i></a>
 
   <a href="../index.html">
-    <h1>ol-games: Game</h1>
+    <h1>ol-games: Sprite collision</h1>
   </a>
   <div class="info">
     The the <i>ol.Collision</i> perform pixel collisions beetween sprites or with an <i>ol.Offscreen</i>.
@@ -101,6 +101,7 @@
     // Layers
     var layer = new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'watercolor' }) });
     var labels = new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'toner-labels' }), title:"labels" });
+    var offlabels = new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'toner-labels' }), title:"labels" });
 
     // Popup overlay
     var popup = new ol.Overlay.Popup ({
@@ -129,7 +130,7 @@
 //    var backmap = new ol.Backscreen({ map:map, layers: [layer, labels], pixelRatio:1 });
 
     // Add an offscreen map to calculte collision over it
-    var offmap = new ol.Offscreen({ map:map, layers: [labels], pixelRatio:1, resample:1 });
+    var offmap = new ol.Offscreen({ map:map, layers: [offlabels], pixelRatio:1, resample:1 });
     $(offmap.canvas).appendTo("#clayer");
 
     var character = new ol.layer.Vector({ 
@@ -211,7 +212,8 @@
       if (game.collide (orc, elf)) {
         popup.show(orc.getCoordinate(), "Hello!");
         spriteCollision.addClass("collide");
-      } else {	popup.hide();
+      } else {
+        popup.hide();
         orc.move(e);
         spriteCollision.removeClass("collide");
       }

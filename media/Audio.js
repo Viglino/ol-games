@@ -2,7 +2,7 @@
   released under the CeCILL-B license (French BSD license)
   (http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
 */
-import {inherits as ol_inherits} from 'ol'
+import ol_ext_inherits from '../util/ext'
 import ol_media_Media from './Media'
 
 /**
@@ -25,7 +25,7 @@ var ol_media_Audio = function (options) {
   // Create HTML5 audio
   ol_media_Media.call(this, { media: a, loop: options.loop });
 };
-ol_inherits (ol_media_Audio, ol_media_Media);
+ol_ext_inherits (ol_media_Audio, ol_media_Media);
 
 /** Use audio context
 * /

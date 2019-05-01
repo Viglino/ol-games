@@ -4,7 +4,7 @@
 
   https://jeux.developpez.com/medias/
 */
-import {inherits as ol_inherits} from 'ol'
+import ol_ext_inherits from '../util/ext'
 import ol_style_Icon from 'ol/style/Icon'
 
 /**
@@ -48,7 +48,7 @@ var ol_style_Sprite = function (options) {
     //if (self.onload_) self.onload_();
   };
 };
-ol_inherits (ol_style_Sprite, ol_style_Icon);
+ol_ext_inherits (ol_style_Sprite, ol_style_Icon);
 
 ol_style_Sprite.prototype.drawImage_ = function() {
   var ctx = this.getImage().getContext("2d");

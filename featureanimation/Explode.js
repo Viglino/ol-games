@@ -3,7 +3,7 @@
   released under the CeCILL license (http://www.cecill.info/).
   
 */
-import {inherits as ol_inherits} from 'ol'
+import ol_ext_inherits from '../util/ext'
 import {asArray as ol_color_asArray} from 'ol/color'
 
 import ol_featureAnimation from 'ol-ext/featureanimation/FeatureAnimation'
@@ -56,7 +56,7 @@ var ol_featureAnimation_Explode = function(options) {
     });
   }
 }
-ol_inherits(ol_featureAnimation_Explode, ol_featureAnimation);
+ol_ext_inherits(ol_featureAnimation_Explode, ol_featureAnimation);
 
 /** Animate
 * @param {ol.featureAnimationEvent} e

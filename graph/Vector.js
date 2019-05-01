@@ -5,7 +5,7 @@
   @example http://www.hexographer.com/
   
 */
-import {inherits as ol_inherits} from 'ol'
+import ol_ext_inherits from '../util/ext'
 import ol_Object from 'ol/Object'
 import ol_source_Vector from 'ol/source/Vector'
 
@@ -30,7 +30,7 @@ var ol_graph_Vector = function (options){
   this.edges.on('addfeature', this.addEdge.bind(this));
   this.edges.on('removefeature', this.removeEdge.bind(this));
 }
-ol_inherits (ol_graph_Vector, ol_Object);
+ol_ext_inherits (ol_graph_Vector, ol_Object);
 
 /** Get the source of the graph
  * @return {ol.source.Vector}

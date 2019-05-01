@@ -5,7 +5,7 @@
   @example http://www.hexographer.com/
   
 */
-import {inherits as ol_inherits} from 'ol'
+import ol_ext_inherits from '../util/ext'
 import ol_Object from 'ol/Object'
 import {intersects as ol_extent_intersects} from 'ol/extent'
 /**
@@ -33,7 +33,7 @@ var ol_Collision = function (options) {
   this.sprites = options.sprites || [];
   this.targets = options.targets || [];
 };
-ol_inherits (ol_Collision, ol_Object);
+ol_ext_inherits (ol_Collision, ol_Object);
 
 /** Get image used to test the collision
 */

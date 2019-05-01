@@ -2,7 +2,7 @@
   released under the CeCILL-B license (French BSD license)
   (http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
 */
-import {inherits as ol_inherits} from 'ol'
+import ol_ext_inherits from '../util/ext'
 import ol_Object from 'ol/Object'
 
 /** Media namespace
@@ -44,7 +44,7 @@ var ol_media_Media = function (options) {
     }), false;
   }
 };
-ol_inherits (ol_media_Media, ol_Object);
+ol_ext_inherits (ol_media_Media, ol_Object);
 
 /** Play a media
 *	@param {number|undefined} start start time (in seconds) of the audio playback, default start where it has paused.

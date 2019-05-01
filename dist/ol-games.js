@@ -119,7 +119,7 @@ ol.Sprite = function (options) {
   this.speed = 0;
   this.dir = [0,0];
 };
-ol.inherits (ol.Sprite, ol.Feature);
+ol.ext.inherits (ol.Sprite, ol.Feature);
 /** Set the name of the sprite (to be display on top of his head)
 * @param {string} name
 */
@@ -378,7 +378,7 @@ ol.featureAnimation.Explode = function(options) {
     });
   }
 }
-ol.inherits(ol.featureAnimation.Explode, ol.featureAnimation);
+ol.ext.inherits(ol.featureAnimation.Explode, ol.featureAnimation);
 /** Animate
 * @param {ol.featureAnimationEvent} e
 */
@@ -451,7 +451,7 @@ ol.Backscreen = function(options) {
   this.image = this.offmap.getViewport().children[0];
   this.canvas = document.createElement('canvas');
 };
-ol.inherits (ol.Backscreen, ol.Object);
+ol.ext.inherits (ol.Backscreen, ol.Object);
 /**	Set the game map
 */
 ol.Backscreen.prototype.setMap = function(map) {
@@ -511,7 +511,7 @@ ol.Collision = function (options) {
   this.sprites = options.sprites || [];
   this.targets = options.targets || [];
 };
-ol.inherits (ol.Collision, ol.Object);
+ol.ext.inherits (ol.Collision, ol.Object);
 /** Get image used to test the collision
 */
 ol.Collision.prototype.getImage = function () {
@@ -642,7 +642,7 @@ ol.Game = function(options) {
   // Default collision
   this.collision = new ol.Collision({ game: this, resample: options.collisionResample }); 
 };
-ol.inherits (ol.Game, ol.Object);
+ol.ext.inherits (ol.Game, ol.Object);
 /**	Set the game map
  * @param {ol.Map} map
 */
@@ -774,12 +774,10 @@ ol.Offscreen = function(options) {
   this.setMap(options.map);
   // Resample to test collision
   this.resample = options.resample || 1;
-  // Canvas
-  this.image = this.offmap.getViewport().children[0];
   this.canvas = document.createElement('canvas');
   this.canvas.width = this.canvas.height = 32;
 };
-ol.inherits (ol.Offscreen, ol.Object);
+ol.ext.inherits (ol.Offscreen, ol.Object);
 /**	Set the game map
 */
 ol.Offscreen.prototype.setMap = function(map) {
@@ -800,7 +798,9 @@ ol.Offscreen.prototype.setMap = function(map) {
 /** Get offscreen image
 */
 ol.Offscreen.prototype.getImage = function() {
-  return this.image;
+  var canvas = this.offmap.getViewport().querySelector('canvas');
+  if  (!canvas) canvas = document.createElement('CANVAS');
+  return canvas;
 };
 /** Change size
 */
@@ -888,7 +888,7 @@ ol.graph.Vector = function (options){
   this.edges.on('addfeature', this.addEdge.bind(this));
   this.edges.on('removefeature', this.removeEdge.bind(this));
 }
-ol.inherits (ol.graph.Vector, ol.Object);
+ol.ext.inherits (ol.graph.Vector, ol.Object);
 /** Get the source of the graph
  * @return {ol.source.Vector}
  */
@@ -1023,7 +1023,7 @@ ol.media.Media = function (options) {
     }), false;
   }
 };
-ol.inherits (ol.media.Media, ol.Object);
+ol.ext.inherits (ol.media.Media, ol.Object);
 /** Play a media
 *	@param {number|undefined} start start time (in seconds) of the audio playback, default start where it has paused.
 */
@@ -1140,7 +1140,7 @@ ol.media.Audio = function (options) {
   // Create HTML5 audio
   ol.media.Media.call(this, { media: a, loop: options.loop });
 };
-ol.inherits (ol.media.Audio, ol.media.Media);
+ol.ext.inherits (ol.media.Audio, ol.media.Media);
 /** Use audio context
 * /
 ol.media.Audio.prototype.getSource = function(b) {
@@ -1353,7 +1353,7 @@ ol.style.Sprite = function (options) {
     //if (self.onload_) self.onload_();
   };
 };
-ol.inherits (ol.style.Sprite, ol.style.Icon);
+ol.ext.inherits (ol.style.Sprite, ol.style.Icon);
 ol.style.Sprite.prototype.drawImage_ = function() {
   var ctx = this.getImage().getContext("2d");
   ctx.clearRect(0,0,this.size, this.size);

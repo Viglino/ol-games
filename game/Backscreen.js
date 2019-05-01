@@ -5,7 +5,7 @@
   @example http://www.hexographer.com/
   
 */
-import {inherits as ol_inherits} from 'ol'
+import ol_ext_inherits from '../util/ext'
 import ol_Object from 'ol/Object'
 import ol_Observable from 'ol/Observable'
 import ol_Map from 'ol/Map'
@@ -50,7 +50,7 @@ var ol_Backscreen = function(options) {
   this.canvas = document.createElement('canvas');
 
 };
-ol_inherits (ol_Backscreen, ol_Object);
+ol_ext_inherits (ol_Backscreen, ol_Object);
 
 /**	Set the game map
 */

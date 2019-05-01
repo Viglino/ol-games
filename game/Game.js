@@ -5,7 +5,7 @@
   @example http://www.hexographer.com/
   
 */
-import {inherits as ol_inherits} from 'ol'
+import ol_ext_inherits from '../util/ext'
 import ol_Object from 'ol/Object'
 import ol_Map from 'ol/Map'
 import ol_View from 'ol/View'
@@ -51,7 +51,7 @@ var ol_Game = function(options) {
   this.collision = new ol_Collision({ game: this, resample: options.collisionResample }); 
 
 };
-ol_inherits (ol_Game, ol_Object);
+ol_ext_inherits (ol_Game, ol_Object);
 
 /**	Set the game map
  * @param {ol.Map} map
