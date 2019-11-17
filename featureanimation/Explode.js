@@ -3,7 +3,7 @@
   released under the CeCILL license (http://www.cecill.info/).
   
 */
-import ol_ext_inherits from '../util/ext'
+import ol_ext_inherits from 'ol-ext/util/ext'
 import {asArray as ol_color_asArray} from 'ol/color'
 
 import ol_featureAnimation from 'ol-ext/featureanimation/FeatureAnimation'

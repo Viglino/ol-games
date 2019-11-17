@@ -4,7 +4,7 @@
 */
 /*eslint no-constant-condition: ["error", { "checkLoops": false }]*/
 
-import ol_ext_inherits from '../util/ext'
+import ol_ext_inherits from 'ol-ext/util/ext'
 import ol_Feature from 'ol/Feature'
 import ol_geom_Point from 'ol/geom/Point'
 import ol_style_Style from 'ol/style/Style'

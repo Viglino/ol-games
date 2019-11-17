@@ -5,7 +5,7 @@
   @example http://www.hexographer.com/
   
 */
-import ol_ext_inherits from '../util/ext'
+import ol_ext_inherits from 'ol-ext/util/ext'
 import ol_Object from 'ol/Object'
 import {intersects as ol_extent_intersects} from 'ol/extent'
 /**

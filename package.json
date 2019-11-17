@@ -7,8 +7,9 @@
     "example": "examples"
   },
   "scripts": {
+    "start": "node ./node_modules/gulp/bin/gulp.js serve",
     "test": "npm test npmtest.js",
-    "lint": "eslint --fix control/ feature/ featureanimation/ game/ graph/ media/ source/ style/ utils/ || exit 0"
+    "lint": "eslint --fix feature/ featureanimation/ game/ graph/ media/ source/ style/ utils/ || exit 0"
   },
   "repository": {
     "type": "git",

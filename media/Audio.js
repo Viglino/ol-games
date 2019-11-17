@@ -2,7 +2,7 @@
   released under the CeCILL-B license (French BSD license)
   (http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
 */
-import ol_ext_inherits from '../util/ext'
+import ol_ext_inherits from 'ol-ext/util/ext'
 import ol_media_Media from './Media'
 
 /**

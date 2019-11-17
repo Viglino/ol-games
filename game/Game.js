@@ -5,7 +5,7 @@
   @example http://www.hexographer.com/
   
 */
-import ol_ext_inherits from '../util/ext'
+import ol_ext_inherits from 'ol-ext/util/ext'
 import ol_Object from 'ol/Object'
 import ol_Map from 'ol/Map'
 import ol_View from 'ol/View'
