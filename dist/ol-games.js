@@ -1174,7 +1174,7 @@ ol.source.HexMap = function(options){
   this.grid.on('change', this.changed.bind(this));
   ol.source.ImageCanvas.call (this, { canvasFunction: this.drawHex });	
 };
-ol.inherits (ol.source.HexMap, ol.source.ImageCanvas);
+ol.ext.inherits (ol.source.HexMap, ol.source.ImageCanvas);
 /** draw an hexagon
 * @param {Canvas context2D} ctx
 * @param {ol.pixel} 
