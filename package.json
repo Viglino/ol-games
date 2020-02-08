@@ -1,6 +1,6 @@
 {
   "name": "ol-games",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Game stuff for ol, powered by HTML5, canvas, javascript and Openlayers.",
   "main": "index.js",
   "directories": {
@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/Viglino/ol-games",
   "dependencies": {
-    "ol-ext": "^3.0.3"
+    "ol-ext": ">=3.0.3"
   },
   "devDependencies": {
     "eslint": "^5.10.0",
