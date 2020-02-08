@@ -390,6 +390,16 @@ ol.featureAnimation.Explode.prototype.animate = function (e) {
       var m = e.frameState.coordinateToPixelTransform;
       var dx = m[0]*e.coord[0] + m[1]*e.coord[1] +m[4];
       var dy = m[2]*e.coord[0] + m[3]*e.coord[1] +m[5];
+      var tr = e.inversePixelTransform;
+      if (tr) {
+        var pt = [
+          (dx*tr[0] - dy*tr[1] + tr[4]),
+          (-dx*tr[2] + dy*tr[3] + tr[5])
+        ];
+        dx = pt[0];
+        dy = pt[1];
+        ratio = 1;
+      }
       e.context.globalCompositeOperation = "lighter";
       e.context.fillStyle = this.gradient;
       e.context.scale(ratio,ratio);
