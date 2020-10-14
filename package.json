@@ -1,6 +1,6 @@
 {
   "name": "ol-games",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Game stuff for ol, powered by HTML5, canvas, javascript and Openlayers.",
   "main": "index.js",
   "directories": {
