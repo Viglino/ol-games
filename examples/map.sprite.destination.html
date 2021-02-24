@@ -119,7 +119,7 @@
 
     // On click => change destination
     map.on ("click", function(e){
-      orc.setDestination(e.coordinate, 10);
+      orc.setDestination(e.coordinate, map.getView().getResolution()/7);
       orc.setState("walk_"+orc.getQuarter());
       popup.hide();
     });
