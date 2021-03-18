@@ -1,7 +1,7 @@
 /**
  * ol-games - Game stuff for ol, powered by HTML5, canvas, javascript and Openlayers.
  * @description ol,openlayers,ol-ext,gamer,gameloop,animation,sprite,media,audio
- * @version v1.0.1
+ * @version v1.0.4
  * @author Jean-Marc Viglino
  * @see https://github.com/Viglino/ol-games
  * @license BSD-3-Clause
@@ -276,9 +276,11 @@ ol.Sprite.prototype.move = function (e) {
     c[0] += dc[0];
     c[1] += dc[1];
     if (this.destination) {
+      var dx = this.path[this.destination][0]-c[0];
+      var dy = this.path[this.destination][1]-c[1];
       // Reach the destination
-      if ( Math.sign(this.path[this.destination][0]-c[0]) != Math.sign(this.dir[0])
-      || Math.sign(this.path[this.destination][1]-c[1]) != Math.sign(this.dir[1]) ) {
+      if ((dx && Math.sign(dx) != Math.sign(this.dir[0]))
+       || (dy && Math.sign(dy) != Math.sign(this.dir[1]))) {
         this.destination++;
         // End of the path ?
         if (this.destination >= this.path.length) {
