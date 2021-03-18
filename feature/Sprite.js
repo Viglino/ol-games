@@ -232,11 +232,13 @@ ol_Sprite.prototype.move = function (e) {
     
     c[0] += dc[0];
     c[1] += dc[1];
-    
+
     if (this.destination) {
+      var dx = this.path[this.destination][0]-c[0];
+      var dy = this.path[this.destination][1]-c[1];
       // Reach the destination
-      if ( Math.sign(this.path[this.destination][0]-c[0]) != Math.sign(this.dir[0])
-      || Math.sign(this.path[this.destination][1]-c[1]) != Math.sign(this.dir[1]) ) {
+      if ((dx && Math.sign(dx) != Math.sign(this.dir[0]))
+       || (dy && Math.sign(dy) != Math.sign(this.dir[1]))) {
         this.destination++;
         // End of the path ?
         if (this.destination >= this.path.length) {
@@ -247,6 +249,7 @@ ol_Sprite.prototype.move = function (e) {
         } else {
           // Overpass ?
           var dl = ol_coordinate_dist2d (c, this.path[this.destination-1]);
+
           while (true) {
             var ds = ol_coordinate_dist2d(this.path[this.destination], this.path[this.destination-1]);
             if (ds > dl) break;
