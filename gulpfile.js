@@ -127,7 +127,7 @@ gulp.task("js", function() {
 
 /* Watch for modification to recreate the dist */
 gulp.task('watch', function() {
-  gulp.watch(['./*/*.js','./*/*.css',"!./dist/*.*"], ['default']);
+  gulp.watch(['./*/*.js','./*/*.css',"!./dist/*.*"], gulp.series('default'));
 });
 
 /* Start a server and watch for modification for live reload */
@@ -146,7 +146,7 @@ gulp.task('serve', function() {
   };
   liveServer.start(params);
 
-  gulp.watch(['./*/*.js','./*/*.css',"!./dist/*.*"], ['default']);
+  gulp.watch(['./*/*.js','./*/*.css',"!./dist/*.*"], gulp.series('default'));
 });
 
 /** Build the doc */
@@ -161,7 +161,7 @@ gulp.task('doc', function (cb) {
 });
 
 // build the dist
-gulp.task("dist", ["js","css"]);
+gulp.task("dist", gulp.parallel("js","css"));
 
 // The default task that will be run if no task is supplied
-gulp.task("default", ["js","css"]);
+gulp.task("default", gulp.parallel("js","css"));
