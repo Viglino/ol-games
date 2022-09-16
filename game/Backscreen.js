@@ -12,6 +12,7 @@ import ol_Map from 'ol/Map'
 
 /**
  * Backscreen map, synchronize with the current map
+ * @deprecated
  * @extends {ol_Object}
  * @param {olx.Backscreen=} options
  *  @param {ol.Map} options.map the map you want to synchronize to

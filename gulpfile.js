@@ -105,7 +105,7 @@ gulp.task("js", function() {
     "./feature/*.js",
     "./featureanimation/*.js",
     "./game/*.js",
-    "./graph/graph.js","./graph/*.js",
+    "./graph/*.js",
     "./media/Media.js", "./media/*.js",
     "./source/*.js",
     "./style/*.js", 

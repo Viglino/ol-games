@@ -19,8 +19,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- OpenLayers -->
-  <link rel="stylesheet" href="https://openlayers.org/en/latest/css/ol.css" />
-  <script type="text/javascript" src="https://openlayers.org/en/latest/build/ol.js"></script>
+  <link rel="stylesheet" href="https://openlayers.org/en/latest/legacy/ol.css" />
+  <script type="text/javascript" src="https://openlayers.org/en/latest/legacy/ol.js"></script>
 
   <!-- ol-ext -->
   <link rel="stylesheet" href="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.css" />
@@ -77,7 +77,7 @@
 
   <script type="text/javascript">
     // Layers
-    var layer = new ol.layer.Tile({ source: new ol.source.Stamen({ layer: 'watercolor' }) });
+    var layer = new ol.layer.Tile({ preload: 2, source: new ol.source.Stamen({ layer: 'watercolor' }) });
 
     // Popup overlay
     var popup = new ol.Overlay.Popup ({
@@ -96,7 +96,6 @@
         zoom: 11,
         center: [260064, 6250762]
       }),
-      controls: ol.control.defaults({ "attribution": false }),
       layers: [layer],
       overlays: [popup]
     });

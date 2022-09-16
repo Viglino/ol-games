@@ -1,302 +1,305 @@
 ﻿<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>ol-games</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>ol-games</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-	<meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:site" content="@viglino">
-	<meta name="twitter:creator" content="@viglino">
-	<meta name="twitter:title" content="ol-games: game stuff for ol">
-	<meta name="twitter:description" content="Some game stuff to use with Openlayers maps (ol). Sprites, animations, sound...">
-	<meta name="twitter:image" content="https://viglino.github.io/ol-games/examples/img/game.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@viglino">
+  <meta name="twitter:creator" content="@viglino">
+  <meta name="twitter:title" content="ol-games: game stuff for ol">
+  <meta name="twitter:description" content="Some game stuff to use with Openlayers maps (ol). Sprites, animations, sound...">
+  <meta name="twitter:image" content="https://viglino.github.io/ol-games/examples/img/game.jpg">
   
-	<meta name="description" content="Some game stuff to use with Openlayers (ol)" />
-	<meta name="keywords" content="ol,openlayers,ol-ext,games,animation,prite,map" />
+  <meta name="description" content="Some game stuff to use with Openlayers (ol)" />
+  <meta name="keywords" content="ol,openlayers,ol-ext,games,animation,prite,map" />
 
-	<link rel="stylesheet" href="examples/githubcorner.css" />
-	
+  <link rel="stylesheet" href="examples/githubcorner.css" />
+  
 <style>
-	body
-	{	font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
-		font-size: 16px;
-		margin: 0.5em;
-	}
-	a 
-	{	color: #337ab7;
-		text-decoration: none;
-	}
-	.navbar 
-	{	top:0; left: 0;
-		right: 0;
-		width:100%;
-		position: fixed;
-		z-index: 0;
-		background-color: #1f6b75;
-		color: white;
-	}
-	.navbar img
-	{	height:2.5em;
-		vertical-align: middle;
-	}
-	.navbar h1
-	{	display: inline-block;
-		font-size:1.5em;
-		margin: 0.5em;
-	}
-	h2
-	{	clear:both;
-		margin:1em 0 0;
-	}
-	.container
-	{	width:1170px;
-		max-width: 100%;
-		margin:auto;
-	}
+  body {
+    font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
+    font-size: 16px;
+    margin: 0.5em;
+  }
+  a {
+    color: #0af;
+    text-decoration: none;
+  }
+  .navbar {
+    top:0; left: 0;
+    right: 0;
+    width:100%;
+    position: fixed;
+    z-index: 0;
+    background-color: #333;
+    color: white;
+  }
+  .navbar img {
+    height:2.5em;
+    vertical-align: middle;
+  }
+  .navbar h1 {
+    display: inline-block;
+    font-size:1.5em;
+    margin: 0.5em;
+  }
+  .navbar h1:hover {
+    color: #0af;
+  }
+  h2 {
+    clear:both;
+    margin:1em 0 0;
+  }
+  .container {
+    width:1170px;
+    max-width: 100%;
+    margin:auto;
+  }
 
-	.small, small 
-	{	font-size: 0.85em;
-	}
+  .small, small {
+    font-size: 0.85em;
+  }
 
-	#examples
-	{	margin-top:6em;
-	}
-	#examples > div > div
-	{	box-sizing: border-box;
-		display: inline-block;
-		float: left;
-		padding: 0.5em;
-		width: 33.3333%;
-	}
-	@media (max-width: 1500px) 
-	{	#examples > div > div
-		{	width: 50%;
-		}
-	}
-	@media (max-width: 900px) 
-	{	#examples > div > div
-		{	width: 100%;
-		}
-	}
+  #examples {
+    margin-top:6em;
+  }
+  #examples > div > div {
+    box-sizing: border-box;
+    display: inline-block;
+    float: left;
+    padding: 0.5em;
+    width: 33.3333%;
+  }
+  @media (max-width: 1500px) {
+    #examples > div > div {
+      width: 50%;
+    }
+  }
+  @media (max-width: 900px) {
+    #examples > div > div {
+      width: 100%;
+    }
+  }
 
-	.example,
-	.desc 
-	{	background-color: #f5f5f5;
-		margin: 0;
-		overflow: auto;
-		padding: 10px;
-	}
-	#examples > div.desc
-	{	margin:-0.5em 0 1em;
-		padding:1em;
-		width:100%;
-		box-sizing: content-box;
-	}
-	
-	.example:hover
-	{	background-color: #ddd;
-	}
-	.example p.description 
-	{	font-size: 0.9em;
-		margin: 5px 0;
-	}
-	.example p.tag
-	{	font-size: 0.8em;
-		color:#693;
-		margin: 0;
-	}
-	.example img
-	{	display:none;
-		margin:auto;
-		float:right;
-		width:180px;
-	}
+  .example,
+  .desc {
+    background-color: #f5f5f5;
+    margin: 0;
+    overflow: auto;
+    padding: 10px;
+  }
+  #examples > div.desc {
+    margin:-0.5em 0 1em;
+    padding:1em;
+    width:100%;
+    box-sizing: border-box;
+  }
+  
+  .example:hover {
+    background-color: #ddd;
+  }
+  .example p.description {
+    font-size: 0.9em;
+    margin: 5px 0;
+  }
+  .example p.tag {
+    font-size: 0.8em;
+    color:#693;
+    margin: 0;
+  }
+  .example img {
+    display:none;
+    margin:auto;
+    float:right;
+    width:180px;
+  }
 
 </style>
 
-	<!-- jQuery -->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <!-- jQuery -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
 
-	<script type="text/javascript">
-		$(document).ready(function()
-		{	$(".example").wrap($("<div>"));
+  <script type="text/javascript">
+    $(document).ready(function()
+    {	$(".example").wrap($("<div>"));
 
-			$(".example a.mainlink").each(function()
-			{	var href = /[^\/]*$/.exec( $(this).attr('href') ).pop();
-				$("<small>").text("("+href+")")
-						.appendTo($(this));
-				$("<img>").attr('src',"img/"+href.replace('html',$(this).data('img')||'jpg'))
-					.appendTo($(this))
-					.load(function(e)
-					{	$(this).show();
-					})
-			})
+      $(".example a.mainlink").each(function()
+      {	var href = /[^\/]*$/.exec( $(this).attr('href') ).pop();
+        $("<small>").text("("+href+")")
+            .appendTo($(this));
+        $("<img>").attr('src',"img/"+href.replace('html',$(this).data('img')||'jpg'))
+          .appendTo($(this))
+          .load(function(e)
+          {	$(this).show();
+          })
+      })
 
-			$('#keywords').on('keyup', function()
-			{	var s = new RegExp ( $(this).val() , "i");
-				var k = 0;
-				$(".example").each(function()
-				{	var text = $(this).text();
-					var t = s.test(text);
-					if (!t) 
-					{	$(this).parent().hide();
-					}
-					else 
-					{	k++;
-						$(this).parent().show();
-					}
-				});
-				$("h2").each(function()
-				{	if ($(".example:visible", $(this).next()).length) $(this).show();
-					else $(this).hide();
-				});
-				$("#count").text("("+k+")");
-				// Set new url
-				window.history.replaceState (null,null, document.location.origin+document.location.pathname+"?q="+$(this).val());
-			});
+      $('#keywords').on('keyup', function()
+      {	var s = new RegExp ( $(this).val() , "i");
+        var k = 0;
+        $(".example").each(function()
+        {	var text = $(this).text();
+          var t = s.test(text);
+          if (!t) 
+          {	$(this).parent().hide();
+          }
+          else 
+          {	k++;
+            $(this).parent().show();
+          }
+        });
+        $("h2").each(function()
+        {	if ($(".example:visible", $(this).next()).length) $(this).show();
+          else $(this).hide();
+        });
+        $("#count").text("("+k+")");
+        // Set new url
+        window.history.replaceState (null,null, document.location.origin+document.location.pathname+"?q="+$(this).val());
+      });
 
-			// Decode url
-			var search = window.location.search.replace(/^\?/,"").split("&");
-			for (var i=0; i<search.length; i++) if (/^q=/.test(search[i]))
-			{	$("#keywords").val(search[i].split("=")[1]).trigger("keyup");
-			}
-		});
-	</script>
+      // Decode url
+      var search = window.location.search.replace(/^\?/,"").split("&");
+      for (var i=0; i<search.length; i++) if (/^q=/.test(search[i]))
+      {	$("#keywords").val(search[i].split("=")[1]).trigger("keyup");
+      }
+    });
+  </script>
 </head>
 
 <body>
-	<a href="https://github.com/Viglino/ol-games" class="icss-github-corner"><i></i></a>
+  <a href="https://github.com/Viglino/ol-games" class="icss-github-corner"><i></i></a>
 
-	<header role="navigation" class="navbar navbar-fixed-top">
-		<div class="container">
-			<h1><img src="img/ol3-games-white.png">&nbsp;ol-games</h1>
-			<input type="text" placeholder="Search" class="search-query" id="keywords" name="q">
-			<span id="count"></span>
-		</div>
-	</header>
-	<div id="examples">
-	
-	<div class="desc">
-		Game stuff for Openlayers (ol), powered by HTML5, canvas, javascript and <a href="https://github.com/openlayers/openlayers">Openlayers</a>. 
-		<br />
-		<br />
-		ol-games uses <a href="https://viglino.github.io/ol-ext/">ol-ext</a>
-	</div>
-		
-	<h2>Utilities</h2>
-		<div>
+  <header role="navigation" class="navbar navbar-fixed-top">
+    <div class="container">
+      <h1><img src="img/ol3-games-white.png">&nbsp;ol-games</h1>
+      <input type="text" placeholder="Search" class="search-query" id="keywords" name="q">
+      <span id="count"></span>
+    </div>
+  </header>
+  <div id="examples">
+  
+  <div class="desc">
+    Game stuff for Openlayers (ol), powered by HTML5, canvas, javascript and <a href="https://github.com/openlayers/openlayers">Openlayers</a>. 
+    <br />
+    <br />
+    ol-games uses <a href="https://viglino.github.io/ol-ext/">ol-ext</a>
+  </div>
+    
+  <h2>Utilities</h2>
+    <div>
 
-			<div class="example">
-				<a class="mainlink" href="examples/map.gameloop.html">
-					<strong>Gameloop</strong><br>
-				</a>
-				<p class="description">
-					The <i>ol.Grame</i> implement a game loop based on the postcompose event of a map.
-				</p>
-				<p class="tag">game, gameloop</p>
-			</div>
+      <div class="example">
+        <a class="mainlink" href="examples/map.gameloop.html">
+          <strong>Gameloop</strong><br>
+        </a>
+        <p class="description">
+          The <i>ol.Grame</i> implement a game loop based on the postcompose event of a map.
+        </p>
+        <p class="tag">game, gameloop</p>
+      </div>
 
-			<div class="example">
-				<a class="mainlink" href="examples/map.framerate.html">
-					<strong>Frame rate control</strong><br>
-				</a>
-				<p class="description">The <i>ol.control.Framerate</i> is a control that show graphically the current framerate.</p>
-				<p class="tag">game, animation, framerate</p>
-			</div>
+      <div class="example">
+        <a class="mainlink" href="examples/map.framerate.html">
+          <strong>Frame rate control</strong><br>
+        </a>
+        <p class="description">The <i>ol.control.Framerate</i> is a control that show graphically the current framerate.</p>
+        <p class="tag">game, animation, framerate</p>
+      </div>
 
-			<div class="example">
-				<a class="mainlink" href="examples/map.hexmap.html">
-					<strong>Hexagon map</strong><br>
-				</a>
-				<p class="description">
-					<i>ol.source.HexMap</i> is an image source that render an hexagonal grid on a map. 
-					The <i>ol.Hexgrid</i> object has function to convert from coordinate to hex or calculate lines beetween hexagons.
-				</p>
-				<p class="tag">map, hexmap, hexagon, grid, hexgrid</p>
-			</div>
+      <div class="example">
+        <a class="mainlink" href="examples/map.hexmap.html">
+          <strong>Hexagon map</strong><br>
+        </a>
+        <p class="description">
+          <i>ol.source.HexMap</i> is an image source that render an hexagonal grid on a map. 
+          The <i>ol.Hexgrid</i> object has function to convert from coordinate to hex or calculate lines beetween hexagons.
+        </p>
+        <p class="tag">map, hexmap, hexagon, grid, hexgrid</p>
+      </div>
 
-		</div>
+    </div>
 
-	<h2>Sprite</h2>
-		<div>
+  <h2>Sprite</h2>
+    <div>
 
-			<div class="example">
-				<a class="mainlink" href="examples/map.sprite.html">
-					<strong>Sprites!</strong><br>
-				</a>
-				<p class="description">
-					<i>ol.Sprite</i> is a convenient class to handle features with a <i>ol.style.sprite</i> and usefull fuctions.
-					It also can handle collisions beetween other sprites or a layer.
-				</p>
-				<p class="tag">game, animation, sprite, collision</p>
-			</div>
+      <div class="example">
+        <a class="mainlink" href="examples/map.sprite.html">
+          <strong>Sprites!</strong><br>
+        </a>
+        <p class="description">
+          <i>ol.Sprite</i> is a convenient class to handle features with a <i>ol.style.sprite</i> and usefull fuctions.
+          It also can handle collisions beetween other sprites or a layer.
+        </p>
+        <p class="tag">game, animation, sprite, collision</p>
+      </div>
 
-			<div class="example">
-				<a class="mainlink" href="examples/map.sprite.destination.html">
-					<strong>Sprite destination</strong><br>
-				</a>
-				<p class="description">
-					<i>ol.Sprite.setDestination()</i> lets you move a sprite to a new destination along a straight line.
-				</p>
-				<p class="tag">game, animation, sprite, move, destination</p>
-			</div>
+      <div class="example">
+        <a class="mainlink" href="examples/map.sprite.destination.html">
+          <strong>Sprite destination</strong><br>
+        </a>
+        <p class="description">
+          <i>ol.Sprite.setDestination()</i> lets you move a sprite to a new destination along a straight line.
+        </p>
+        <p class="tag">game, animation, sprite, move, destination</p>
+      </div>
 
-			<div class="example">
-				<a class="mainlink" href="examples/map.sprite.path.html">
-					<strong>Sprite path</strong><br>
-				</a>
-				<p class="description">
-					<i>ol.Sprite.setPath()</i> lets you move a sprite along a path.
-				</p>
-				<p class="tag">game, animation, sprite, move, path</p>
-			</div>
+      <div class="example">
+        <a class="mainlink" href="examples/map.sprite.path.html">
+          <strong>Sprite path</strong><br>
+        </a>
+        <p class="description">
+          <i>ol.Sprite.setPath()</i> lets you move a sprite along a path.
+        </p>
+        <p class="tag">game, animation, sprite, move, path</p>
+      </div>
 
-			<div class="example">
-				<a class="mainlink" href="examples/map.sprite.collision.html">
-					<strong>Sprite collision</strong><br>
-				</a>
-				<p class="description">
-					Use the <i>ol.Collision</i> or the <i>ol.Game.collide()</i> function to detect pixel collisions 
-					beetween sprites or with an <i>ol.Offscreen</i>.
-				</p>
-				<p class="tag">game, collision, sprite, pixel</p>
-			</div>
+      <div class="example">
+        <a class="mainlink" href="examples/map.sprite.collision.html">
+          <strong>Sprite collision</strong><br>
+        </a>
+        <p class="description">
+          Use the <i>ol.Collision</i> or the <i>ol.Game.collide()</i> function to detect pixel collisions 
+          beetween sprites or with an <i>ol.Offscreen</i>.
+        </p>
+        <p class="tag">game, collision, sprite, pixel</p>
+      </div>
 
-		</div>
+    </div>
 
-	<h2>Animation</h2>
-		<div>
+  <h2>Animation</h2>
+    <div>
 
-			<div class="example">
-				<a class="mainlink" href="examples/map.explode.html">
-					<strong>Explosions!</strong><br>
-				</a>
-				<p class="description">An <i>ol.feature.Animation</i> to make explosions on the map.</p>
-				<p class="tag">game, animation, audio, explosion</p>
-			</div>
+      <div class="example">
+        <a class="mainlink" href="examples/map.explode.html">
+          <strong>Explosions!</strong><br>
+        </a>
+        <p class="description">An <i>ol.feature.Animation</i> to make explosions on the map.</p>
+        <p class="tag">game, animation, audio, explosion</p>
+      </div>
 
-		</div>
+    </div>
 
-	<h2>Sound/music</h2>
-		<div>
+  <h2>Sound/music</h2>
+    <div>
 
-			<div class="example">
-				<a class="mainlink" href="examples/map.audio.html">
-					<strong>Audio on a map</strong><br>
-				</a>
-				<p class="description">Usefull class to handle audio API.</p>
-				<p class="tag">game, audio, media, sound</p>
-			</div>
+      <div class="example">
+        <a class="mainlink" href="examples/map.audio.html">
+          <strong>Audio on a map</strong><br>
+        </a>
+        <p class="description">Usefull class to handle audio API.</p>
+        <p class="tag">game, audio, media, sound</p>
+      </div>
 
-		</div>
+    </div>
 
 
-	<h2>Full games</h2>
-		<div>
+  <h2>Full games</h2>
+    <div>
 
-		</div>
+    </div>
 
-	</div>
+  </div>
 
 </body>
 </html>

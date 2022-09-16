@@ -19,8 +19,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- OpenLayers -->
-  <link rel="stylesheet" href="https://openlayers.org/en/latest/css/ol.css" />
-  <script type="text/javascript" src="https://openlayers.org/en/latest/build/ol.js"></script>
+  <link rel="stylesheet" href="https://openlayers.org/en/latest/legacy/ol.css" />
+  <script type="text/javascript" src="https://openlayers.org/en/latest/legacy/ol.js"></script>
 
   <!-- ol-ext -->
   <link rel="stylesheet" href="https://rawgit.com/Viglino/ol-ext/master/dist/ol-ext.css" />
@@ -111,16 +111,15 @@
     });
 
     // The map
-    var map = new ol.Map
-      ({	target: 'map',
-        view: new ol.View
-        ({	zoom: 11,
-          center: [260064, 6250762]
-        }),
-        controls: ol.control.defaults({ "attribution": false }),
-        layers: layers,
-        overlays: [popup]
-      });
+    var map = new ol.Map({
+      target: 'map',
+      view: new ol.View({
+        zoom: 11,
+        center: [260064, 6250762]
+      }),
+      layers: layers,
+      overlays: [popup]
+    });
 
     var grid = new ol.HexGrid ({ size:4000, origin: map.getView().getCenter() });
     var hex = new ol.source.HexMap({ hexGrid: grid });
@@ -135,21 +134,21 @@
       source: new ol.source.Vector(),
       //style: new ol.style.Style ({ fill: new ol.style.Fill({ color:"red"} )})
     });
-        map.addLayer(vector);
+    map.addLayer(vector);
 
     // Styles
-    var greenStyle = new ol.style.Style(
-      {	fill: new ol.style.Fill({ color: 'rgba(0,255,0,0.2)' }),
-          stroke: new ol.style.Stroke({ color: 'green', width: 1.25 })
-      });
-    var blueStyle = new ol.style.Style(
-      {	fill: new ol.style.Fill({ color: 'rgba(0,0,255,0.2)' }),
-          stroke: new ol.style.Stroke({ color: 'blue', width: 1.25 })
-      });
-    var redStyle = new ol.style.Style(
-      {	fill: new ol.style.Fill({ color: 'rgba(255,0,0,0.2)' }),
-          stroke: new ol.style.Stroke({ color: 'red', width: 1.25 })
-      });
+    var greenStyle = new ol.style.Style({
+      fill: new ol.style.Fill({ color: 'rgba(0,255,0,0.2)' }),
+        stroke: new ol.style.Stroke({ color: 'green', width: 1.25 })
+    });
+    var blueStyle = new ol.style.Style({
+      fill: new ol.style.Fill({ color: 'rgba(0,0,255,0.2)' }),
+        stroke: new ol.style.Stroke({ color: 'blue', width: 1.25 })
+    });
+    var redStyle = new ol.style.Style({
+      fill: new ol.style.Fill({ color: 'rgba(255,0,0,0.2)' }),
+        stroke: new ol.style.Stroke({ color: 'red', width: 1.25 })
+    });
 
     // Pointer move
     var current = [];

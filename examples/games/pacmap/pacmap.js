@@ -8,124 +8,122 @@ https://github.com/masonicGIT/pacman
 
 */
 
-var Pacman = function (options) {
-  var options = options||{};
-  ol.Feature.call (this, new ol.geom.Point([0,0]));
-  this.speed = 3;
-  this.dir = 1;
-  this.graph = options.graph;
-  this.image = new ol.style.RegularShape({
-    fill: new ol.style.Fill({ color:"#ff0" }),
-    radius: 8,
-    points: 3,
-    rotation: 0
-  });
-  this.setStyle(new ol.style.Style({ image: this.image }));
-};
-ol.inherits (Pacman, ol.Feature);
-
-/** Set position on the graph 
-* @param {ol.coordinate} c position
-*/
-Pacman.prototype.setPosition = function(c){
-  var track = this.graph.getNN (c);
-  this.setTrack ({
-    track: track, 
-    ref: track.getGeometry().lineRef(c)
-  });
-};
-
-/** Set current track
-*/
-Pacman.prototype.setTrack = function(options){
-  if (options.dir != undefined) this.dir = options.dir;
-  if (options.track) {
-    this.track = options.track;
-    this.trackLength = this.track.getGeometry().getLength();
+class Pacman extends ol.Feature {
+  constructor(options) {
+    var options = options || {};
+    super(new ol.geom.Point([0, 0]));
+    this.speed = 3;
+    this.dir = 1;
+    this.graph = options.graph;
+    this.image = new ol.style.RegularShape({
+      fill: new ol.style.Fill({ color: "#ff0" }),
+      radius: 8,
+      points: 3,
+      rotation: 0
+    });
+    this.setStyle(new ol.style.Style({ image: this.image }));
   }
-  if (options.ref != undefined) {
-    this.ref = options.ref;
-    if (this.ref>this.trackLength) this.ref = this.trackLength;
-    if (this.ref<0) this.ref = 0;
-    var seg = [];
-    this.getGeometry().setCoordinates( this.track.getGeometry().getCoordinateAtRef(this.ref, seg) );
-    this.image.setRotation( Math.atan2 ( seg[0][0]-seg[1][0], seg[0][1]-seg[1][1] ) + (this.dir>0 ? Math.PI : 0) );
+  /** Set position on the graph
+  * @param {ol.coordinate} c position
+  */
+  setPosition(c) {
+    var track = this.graph.getNN(c);
+    this.setTrack({
+      track: track,
+      ref: track.getGeometry().lineRef(c)
+    });
   }
-};
-
-/** Go backward: revers running direction
-*/
-Pacman.prototype.goBack = function(){
-  this.setTrack({ dir: -1*this.dir });
-};
-
-/** Find next road to go at intersection
-*/
-Pacman.prototype.nextRoad = function(p) {var self = this;
-  var con = this.graph.getConnections(p, true, function(f){
-    return (f !== self.track); 
-  });
-
-  function diffangle(a, ai) {
-    var da = Math.abs(a-ai)%pi2;
-    return Math.min(da,pi2-da);
+  /** Set current track
+  */
+  setTrack(options) {
+    if (options.dir != undefined)
+      this.dir = options.dir;
+    if (options.track) {
+      this.track = options.track;
+      this.trackLength = this.track.getGeometry().getLength();
+    }
+    if (options.ref != undefined) {
+      this.ref = options.ref;
+      if (this.ref > this.trackLength)
+        this.ref = this.trackLength;
+      if (this.ref < 0)
+        this.ref = 0;
+      var seg = [];
+      this.getGeometry().setCoordinates(this.track.getGeometry().getCoordinateAtRef(this.ref, seg));
+      this.image.setRotation(Math.atan2(seg[0][0] - seg[1][0], seg[0][1] - seg[1][1]) + (this.dir > 0 ? Math.PI : 0));
+    }
   }
-  // Find direction to go
-  if (con.out.length || con.in.length) {
-    var track;
-    var ai, a, min=Infinity, da;
-    if (this.nextMove && con.out.length+con.in.length > 1) {
-      a = Math.atan2 ( p[0]-this.nextMove[0], p[1]-this.nextMove[1] ) + Math.PI;
-      //this.nextMove = false;
+  /** Go backward: revers running direction
+  */
+  goBack() {
+    this.setTrack({ dir: -1 * this.dir });
+  }
+  /** Find next road to go at intersection
+  */
+  nextRoad(p) {
+    var self = this;
+    var con = this.graph.getConnections(p, true, function (f) {
+      return (f !== self.track);
+    });
+
+    function diffangle(a, ai) {
+      var da = Math.abs(a - ai) % pi2;
+      return Math.min(da, pi2 - da);
+    }
+    // Find direction to go
+    if (con.out.length || con.in.length) {
+      var track;
+      var ai, a, min = Infinity, da;
+      if (this.nextMove && con.out.length + con.in.length > 1) {
+        a = Math.atan2(p[0] - this.nextMove[0], p[1] - this.nextMove[1]) + Math.PI;
+        //this.nextMove = false;
+      } else {
+        a = this.image.getRotation();
+      }
+      //console.log("a="+a*180/Math.PI)
+      var seg = [];
+      var pi2 = 2 * Math.PI;
+      for (var i = 0; i < con.out.length; i++) {
+        con.out[i].getGeometry().getCoordinateAtRef(0, seg);
+        ai = Math.atan2(seg[0][0] - seg[1][0], seg[0][1] - seg[1][1]) + Math.PI;
+        //console.log("ai="+ai*180/Math.PI)
+        da = diffangle(a, ai);
+        if (da < min) {
+          min = da;
+          track = { dir: 1, ref: 0, track: con.out[i] };
+        }
+      }
+      for (var i = 0; i < con.in.length; i++) {
+        con.in[i].getGeometry().getCoordinateAtRef(Infinity, seg);
+        ai = Math.atan2(seg[0][0] - seg[1][0], seg[0][1] - seg[1][1]);
+        //console.log("ai="+ai*180/Math.PI)
+        da = diffangle(a, ai);
+        if (da < min) {
+          min = da;
+          track = { dir: -1, ref: Infinity, track: con.in[i] };
+        }
+      }
+      //console.log("min="+min*180/Math.PI)
+      this.setTrack(track);
     } else {
-      a = this.image.getRotation();
+      console.log("cul de sac");
+      this.dir *= -1;
     }
-//console.log("a="+a*180/Math.PI)
-
-    var seg = [];
-    var pi2 = 2*Math.PI;
-    for (var i=0; i<con.out.length; i++) {
-      con.out[i].getGeometry().getCoordinateAtRef(0, seg);
-      ai = Math.atan2 ( seg[0][0]-seg[1][0], seg[0][1]-seg[1][1] ) + Math.PI;
-//console.log("ai="+ai*180/Math.PI)
-      da = diffangle(a,ai);
-      if (da < min) {
-        min = da;
-        track = { dir: 1, ref: 0, track: con.out[i] };
-      }
+  }
+  /** Move
+  * @param {number} dt ellapsed time
+  */
+  move(dt) {
+    var ref = this.ref + this.dir * this.speed * dt;
+    if (ref <= 0) {
+      this.nextRoad(this.track.getGeometry().getFirstCoordinate());
+    } else if (ref >= this.trackLength) {
+      this.nextRoad(this.track.getGeometry().getLastCoordinate());
+    } else {
+      this.setTrack({ ref: ref });
     }
-    for (var i=0; i<con.in.length; i++) {
-      con.in[i].getGeometry().getCoordinateAtRef(Infinity, seg)
-      ai = Math.atan2 ( seg[0][0]-seg[1][0], seg[0][1]-seg[1][1] );
-//console.log("ai="+ai*180/Math.PI)
-      da = diffangle(a,ai);
-      if (da < min) {
-        min = da;
-        track = { dir: -1, ref: Infinity, track: con.in[i] };
-      }
-    }
-//console.log("min="+min*180/Math.PI)
-    this.setTrack (track);
-  } else {
-    console.log("cul de sac");
-    this.dir *= -1;
   }
 }
-
-/** Move 
-* @param {number} dt ellapsed time
-*/
-Pacman.prototype.move = function(dt) {
-  var ref = this.ref + this.dir * this.speed * dt;
-  if (ref <= 0) {
-    this.nextRoad(this.track.getGeometry().getFirstCoordinate());
-  } else if (ref >= this.trackLength) {
-    this.nextRoad(this.track.getGeometry().getLastCoordinate());
-  } else {
-    this.setTrack({ ref:ref });
-  }
-};
-
 
 /** The game
 */
@@ -171,7 +169,6 @@ Game.prototype.initMap = function() {
       zoom: 11,
       center: [260064, 6250762]
     }),
-    controls: ol.control.defaults({ "attribution": false }),
     layers: layers,
   });
 
