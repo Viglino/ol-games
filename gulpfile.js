@@ -52,7 +52,7 @@ function transform() {
         content = content.replace(/\blet\b/g, 'var');
         content = content.replace(/\bconst\b/g, 'var');
         // return content
-        file.contents = new Buffer(content);
+        file.contents = Buffer.from(content);
       }
       return callback(null, file);
     }
@@ -127,7 +127,7 @@ gulp.task("js", function() {
 
 /* Watch for modification to recreate the dist */
 gulp.task('watch', function() {
-  gulp.watch(['./*/*.js','./*/*.css',"!./dist/*.*"], gulp.series('default'));
+  gulp.watch(['*/*.js','*/*.css',"!./dist/*.*"], gulp.series('default'));
 });
 
 /* Start a server and watch for modification for live reload */
@@ -146,7 +146,7 @@ gulp.task('serve', function() {
   };
   liveServer.start(params);
 
-  gulp.watch(['./*/*.js','./*/*.css',"!./dist/*.*"], gulp.series('default'));
+  gulp.watch(['*/*','*/*','!dist/*'], gulp.series('default'));
 });
 
 /** Build the doc */

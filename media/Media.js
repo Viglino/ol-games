@@ -95,22 +95,36 @@ var ol_media_Media = class olmediaMedia extends ol_Object {
       this.media.muted = b;
   }
   /** Return whether the audio is muted or not
-  * @return {bool}
-  */
+   * @return {bool}
+   */
   isMuted() {
     return this.media.muted;
   }
+  /** Gets the current playback position in the media (in seconds)
+   *	@returns {number}
+   */
+  getTime() {
+    return this.media.currentTime;
+  }
   /** Sets the current playback position in the media (in seconds)
-  *	@param {number|undefined} t time (in seconds) of the audio playback, default start at the beginning.
-  */
-  getTime(t) {
-    this.media.prop("currentTime", t);
+   *	@param {number|undefined} t time (in seconds) of the audio playback, default start at the beginning.
+   */
+  setTime(t) {
+    this.mediacurrentTime = t || 0;
   }
   /** Returns the length of the current media (in seconds)
-  * @return {number} sound duration in seconds
-  */
+   * @return {number} sound duration in seconds
+   */
   getDuration() {
-    return this.media.prop("duration");
+    return this.media.duration;
+  }
+  /** Returns the length of the current media (formated mm:ss)
+  * @return {string} sound duration formated mm:ss
+  */
+  getDurationMS() {
+    return Math.floor(this.media.duration / 60) + 
+      ':' +
+      ('0' + Math.floor((this.media.duration - Math.floor(this.media.duration / 60) * 60))).substr(-2);
   }
   /** Sets whether the media should start over again when finished
    * @param {boolean} b
@@ -125,23 +139,5 @@ var ol_media_Media = class olmediaMedia extends ol_Object {
     return this.media.loop;
   }
 }
-
-
-/** Returns the current playback position in the media (in seconds)
-*	@return {number} current time (in seconds) of the audio playback
-*/
-ol_media_Media.prototype.getTime = function() {
-  return this.media.prop("currentTime");
-};
-
-
-/** Returns the length of the current media (formated mm:ss)
-* @return {string} sound duration formated mm:ss
-*/
-ol_media_Media.prototype.getDuration = function() {
-  return Math.floor(this.media.prop("duration")/60)+":"+Math.floor((this.media.prop("duration")-Math.floor(this.media.prop("duration")/60)*60));
-};
-
-
 
 export default ol_media_Media
