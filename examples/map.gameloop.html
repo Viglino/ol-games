@@ -19,8 +19,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- OpenLayers -->
-  <link rel="stylesheet" href="https://openlayers.org/en/latest/legacy/ol.css" />
-  <script type="text/javascript" src="https://openlayers.org/en/latest/legacy/ol.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css" />
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
 
   <!-- ol-ext -->
   <link rel="stylesheet" href="https://viglino.github.io/ol-ext/dist/ol-ext.css" />
@@ -70,7 +70,7 @@
 
   <script type="text/javascript">
     // Layers
-    var layer = new ol.layer.Tile({ preload:Infinity, source: new ol.source.Stamen({ layer: 'watercolor' }) });
+    var layer = new ol.layer.Tile({ preload:Infinity, source: new ol.source.StadiaMaps({ layer: 'stamen_watercolor' }) });
 
     // Overlay to add features on it
     var overlay = new ol.layer.Vector({ source: new ol.source.Vector() });

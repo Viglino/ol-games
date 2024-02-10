@@ -1,7 +1,7 @@
 /**
  * ol-games - Game stuff for ol, powered by HTML5, canvas, javascript and Openlayers.
  * @description ol,openlayers,ol-ext,gamer,gameloop,animation,sprite,media,audio
- * @version v1.0.4
+ * @version v2.0.0
  * @author Jean-Marc Viglino
  * @see https://github.com/Viglino/ol-games
  * @license BSD-3-Clause
